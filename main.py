@@ -16,7 +16,7 @@ case_list = ["CS:GO Weapon Case 3", "Shadow Case", "Operation Wildfire Case", "F
              "Operation Breakout Weapon Case", "Operation Hydra Case", "Operation Bravo Case", "eSports 2013 Case",
              "CS:GO Weapon Case"]
 
-cases_list = ["Clutch Case", "CS20 Case", "Danger Zone Case"]
+cases_list = []
 
 
 @bot.message_handler(commands=["start"])
