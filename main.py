@@ -17,7 +17,6 @@ case_list = ["CS:GO Weapon Case 3", "Shadow Case", "Operation Wildfire Case", "F
              "CS:GO Weapon Case"]
 
 cases_list = []
-case_dict = {}
 
 
 @bot.message_handler(commands=["start"])
