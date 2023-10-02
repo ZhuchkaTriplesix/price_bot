@@ -42,4 +42,13 @@ def item_list(message):
     bot.send_message(message.chat.id, text="What case do u want to add?", reply_markup=markup)
 
 
+@bot.callback_query_handler(func=lambda call: True)
+def answer(call):
+    if call.data not in cases_list:
+        cases_list.append(call.data)
+    else:
+        pass
+    print(cases_list)
+
+
 bot.polling(none_stop=True)
