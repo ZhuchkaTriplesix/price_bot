@@ -55,7 +55,6 @@ def cases(message):
         pass
 
 
-
 @bot.message_handler(commands=["Add_case"])
 def item_list(message):
     markup = telebot.types.InlineKeyboardMarkup()
