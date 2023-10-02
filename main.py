@@ -1,5 +1,6 @@
 import steammarket as sm
 import telebot
+import sqlite3
 
 with open("token.txt", "r") as TOKEN:
     bot_token = TOKEN.readline()
@@ -23,6 +24,15 @@ def start(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
     keyboard.row("/Cases", "/Add_case", "/Check_list")
     bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
+    connect = sqlite3.connect('users.db')
+    cursor = connect.cursor()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS users_id(
+        id INTEGER
+    )""")
+    connect.commit()
+    user_id = [message.chat.id]
+    cursor.execute("INSERT INTO users_id VALUES(?);", user_id)
+    connect.commit()
 
 
 @bot.message_handler(commands=["cases", "Cases"])
