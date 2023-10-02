@@ -1,6 +1,5 @@
 import steammarket as sm
 import telebot
-from telebot import types
 
 with open("token.txt", "r") as TOKEN:
     bot_token = TOKEN.readline()
