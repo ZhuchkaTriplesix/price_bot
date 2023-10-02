@@ -22,7 +22,7 @@ cases_list = []
 @bot.message_handler(commands=["start"])
 def start(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
-    keyboard.row("/Cases", "/Add_case", "/Check_list")
+    keyboard.row("/Cases", "/Add_case", "/Check_list", "/Clear")
     bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
     connect = sqlite3.connect('users.db')
     cursor = connect.cursor()
@@ -35,14 +35,24 @@ def start(message):
     connect.commit()
 
 
+@bot.message_handler(commands=["Clear"])
+def clear_list(message):
+    cases_list.clear()
+    bot.send_message(message.chat.id, text='You have successful cleared your list')
+
+
 @bot.message_handler(commands=["cases", "Cases"])
 def cases(message):
     print(message.from_user.id)
     x = ""
-    for case in cases_list:
-        case_price = sm.get_item(730, case, currency='RUB')
-        x = f"{x + case}: {str(case_price['lowest_price'])} \n"
-    bot.send_message(message.chat.id, x)
+    if len(cases_list) > 0:
+        for case in cases_list:
+            case_price = sm.get_item(730, case, currency='RUB')
+            x = f"{x + case}: {str(case_price['lowest_price'])} \n"
+        bot.send_message(message.chat.id, x)
+    else:
+        bot.send_message(message.chat.id, "Please add any case")
+        pass
 
 
 @bot.message_handler(commands=["Add_case"])
@@ -55,10 +65,12 @@ def item_list(message):
 
 @bot.message_handler(commands=["Check_list"])
 def check_list(message):
+    x = ''
     if len(cases_list) > 0:
         bot.send_message(message.chat.id, text="Your cases list:")
         for case in cases_list:
-            bot.send_message(message.chat.id, text=case)
+            x = f"{x + case}\n"
+        bot.send_message(message.chat.id, x)
     else:
         bot.send_message(message.chat.id, text="You don't have cases in your list")
 
