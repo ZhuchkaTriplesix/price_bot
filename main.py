@@ -17,29 +17,42 @@ case_list = ["CS:GO Weapon Case 3", "Shadow Case", "Operation Wildfire Case", "F
              "CS:GO Weapon Case"]
 
 cases_list = []
+case_dict = {}
 
 
 @bot.message_handler(commands=["start"])
 def start(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
-    keyboard.row("/Cases", "/Case_list")
+    keyboard.row("/Cases", "/Add_case", "/Check_list")
     bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
 
 
 @bot.message_handler(commands=["cases", "Cases"])
 def cases(message):
     print(message.from_user.id)
+    x = ""
     for case in cases_list:
         case_price = sm.get_item(730, case, currency='RUB')
-        bot.send_message(message.chat.id, case + ": " + str(case_price["lowest_price"]))
+        x = f"{x + case}: {str(case_price['lowest_price'])} \n"
+    bot.send_message(message.chat.id, x)
 
 
-@bot.message_handler(commands=["Case_list"])
+@bot.message_handler(commands=["Add_case"])
 def item_list(message):
     markup = telebot.types.InlineKeyboardMarkup()
     for btns in case_list:
         markup.add(telebot.types.InlineKeyboardButton(text=btns, callback_data=btns))
     bot.send_message(message.chat.id, text="What case do u want to add?", reply_markup=markup)
+
+
+@bot.message_handler(commands=["Check_list"])
+def check_list(message):
+    if len(cases_list) > 0:
+        bot.send_message(message.chat.id, text="Your cases list:")
+        for case in cases_list:
+            bot.send_message(message.chat.id, text=case)
+    else:
+        bot.send_message(message.chat.id, text="You don't have cases in your list")
 
 
 @bot.callback_query_handler(func=lambda call: True)
