@@ -16,7 +16,7 @@ case_list = ["CS:GO Weapon Case 3", "Shadow Case", "Operation Wildfire Case", "F
              "Operation Breakout Weapon Case", "Operation Hydra Case", "Operation Bravo Case", "eSports 2013 Case",
              "CS:GO Weapon Case"]
 
-cases_list = []
+cases_list = ["CS20 Case", "Danger Zone Case", "Clutch Case"]
 user_data = {}
 json_data = "user_list.json"
 
@@ -24,7 +24,7 @@ json_data = "user_list.json"
 @bot.message_handler(commands=["start"])
 def start(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
-    keyboard.row("/Cases", "/Add_case", "/Check_list", "/Clear")
+    keyboard.row("/Cases", "/Add_case", "/Update", "/Clear")
     bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
 
 
@@ -36,16 +36,17 @@ def clear_list(message):
 
 @bot.message_handler(commands=["cases", "Cases"])
 def cases(message):
-    print(message.from_user.id)
-    x = ""
-    if len(cases_list) > 0:
-        for case in cases_list:
+    x = ''
+    user_id = message.from_user.id
+    user_id = f"{user_id}"
+    data = json_support.read_inf(json_data)
+    if user_id in data.keys():
+        for case in data[user_id]:
             case_price = sm.get_item(730, case, currency='RUB')
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
-        bot.send_message(message.chat.id, x)
+        bot.send_message(message.chat.id, f"Your cases price:\n{x}")
     else:
-        bot.send_message(message.chat.id, "Please add any case")
-        pass
+        bot.send_message(message.chat.id, "Ypu don't have cases in your list")
 
 
 @bot.message_handler(commands=["Add_case"])
@@ -56,16 +57,22 @@ def item_list(message):
     bot.send_message(message.chat.id, text="What case do u want to add?", reply_markup=markup)
 
 
-@bot.message_handler(commands=["Check_list"])
-def check_list(message):
-    x = ''
-    if len(cases_list) > 0:
-        bot.send_message(message.chat.id, text="Your cases list:")
-        for case in cases_list:
-            x = f"{x + case}\n"
-        bot.send_message(message.chat.id, x)
+@bot.message_handler(commands=["Update"])
+def update(message):
+    user_id = message.from_user.id
+    user_id = f"{user_id}"
+    data = json_support.read_inf(json_data)
+    if user_id in data.keys():
+        data[user_id].update(cases_list)
+        json_support.write_inf(data, json_data)
+        bot.send_message(message.chat.id, "Your list has been updated")
     else:
-        bot.send_message(message.chat.id, text="You don't have cases in your list")
+        c = {}
+        c[user_id] = cases_list
+        data.update(c)
+        json_support.write_inf(data, json_data)
+        bot.send_message(message.chat.id, "You have added your item list")
+        print(message.chat.first_name, "add a new dict in json")
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -75,23 +82,6 @@ def answer(call):
     else:
         pass
     print(cases_list)
-
-
-@bot.message_handler(commands=['test'])
-def json_write(message):
-    user_id = message.from_user.id
-    a = f"{user_id}"
-    x = ''
-    if user_id not in user_data.keys():
-        user_data[user_id] = cases_list
-        json_support.data_write(json_data, user_data)
-    else:
-        f = user_data[user_id]
-        print(f"hi {f}")
-        for case in f:
-            case_price = sm.get_item(730, case, currency='RUB')
-            x = f"{x + case}: {str(case_price['lowest_price'])} \n"
-        bot.send_message(message.chat.id, x)
 
 
 bot.polling(none_stop=True)
