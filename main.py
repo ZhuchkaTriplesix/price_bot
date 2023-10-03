@@ -63,12 +63,12 @@ def update(message):
     user_id = f"{user_id}"
     data = json_support.read_inf(json_data)
     if user_id in data.keys():
-        data[user_id].update(cases_list)
+        c = {user_id: cases_list}
+        data.update(c)
         json_support.write_inf(data, json_data)
         bot.send_message(message.chat.id, "Your list has been updated")
     else:
-        c = {}
-        c[user_id] = cases_list
+        c = {user_id: cases_list}
         data.update(c)
         json_support.write_inf(data, json_data)
         bot.send_message(message.chat.id, "You have added your item list")
