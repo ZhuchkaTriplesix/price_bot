@@ -6,6 +6,7 @@ token.txt
 cases.json
 .idea
 # C extensions
+user_list.json
 *.so
 .idea/.gitignore
 .idea/inspectionProfiles/profiles_settings.xml
@@ -15,7 +16,8 @@ cases.json
 .idea/vcs.xml
 token.txt
 users.db
-
+.DS_Store
+user_list.json
 
 # Distribution / packaging
 .Python
