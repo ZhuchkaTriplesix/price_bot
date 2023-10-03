@@ -46,7 +46,7 @@ def cases(message):
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
         bot.send_message(message.chat.id, f"Your cases price:\n{x}")
     else:
-        bot.send_message(message.chat.id, "Ypu don't have cases in your list")
+        bot.send_message(message.chat.id, "You don't have cases in your list")
 
 
 @bot.message_handler(commands=["Add_case"])
