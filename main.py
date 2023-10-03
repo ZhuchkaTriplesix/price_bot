@@ -1,6 +1,8 @@
 import steammarket as sm
 import telebot
 import json_support
+import schedule
+import time
 
 with open("token.txt", "r") as TOKEN:
     bot_token = TOKEN.readline()
@@ -21,9 +23,23 @@ user_data = {}
 json_data = "user_list.json"
 
 
+def time_spam(message):
+    x = ''
+    user_id = message.from_user.id
+    user_id = f"{user_id}"
+    data = json_support.read_inf(json_data)
+    if user_id in data.keys() and len(data[user_id]) > 0:
+        for case in data[user_id]:
+            case_price = sm.get_item(730, case, currency='RUB')
+            x = f"{x + case}: {str(case_price['lowest_price'])} \n"
+        bot.send_message(message.chat.id, f"Your cases price:\n{x}")
+    else:
+        bot.send_message(message.chat.id, "You don't have cases in your list")
+
+
 @bot.message_handler(commands=["start"])
 def start(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(True)
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row("/Cases", "/Add_case", "/Update", "/Clear")
     bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
 
@@ -40,7 +56,7 @@ def cases(message):
     user_id = message.from_user.id
     user_id = f"{user_id}"
     data = json_support.read_inf(json_data)
-    if user_id in data.keys():
+    if user_id in data.keys() and len(data[user_id]) > 0:
         for case in data[user_id]:
             case_price = sm.get_item(730, case, currency='RUB')
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
