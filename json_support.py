@@ -1,14 +1,13 @@
 import json
 
-user_data = "user_list.json"
+
+def write_inf(data, file_name):
+    data = json.dumps(data)
+    data = json.loads(str(data))
+    with open(file_name, 'w', encoding="utf-8") as file:
+        json.dump(data, file, indent=4)
 
 
-def get_data(user_data):
-    with open(user_data, "r") as data_file:
-        user_dict = json.load(data_file)
-        return user_dict
-
-
-def data_write(user_data, user_dict):
-    with open(user_data, "w") as data_file:
-        data_file.write(json.dumps(user_dict))
+def read_inf(file_name):
+    with open(file_name, 'r', encoding="utf-8") as file:
+        return json.load(file)
