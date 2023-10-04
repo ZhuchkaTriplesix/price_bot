@@ -1,13 +1,16 @@
+import asyncio
+import aiogram.types
+from aiogram import Bot, Dispatcher, F
+from aiogram.types import Message, CallbackQuery
 import steammarket as sm
-import telebot
 import json_support
-import schedule
-import time
+import keyboards as kb
 
 with open("token.txt", "r") as TOKEN:
     bot_token = TOKEN.readline()
 
-bot = telebot.TeleBot(bot_token)
+bot = Bot(bot_token)
+dp = Dispatcher()
 case_list = ["CS:GO Weapon Case 3", "Shadow Case", "Operation Wildfire Case", "Falchion Case", "Horizon Case",
              "Revolver Case", "Prisma Case", "Operation Vanguard Weapon Case", "Prisma 2 Case", "CS20 Case",
              "Danger Zone Case", "Snakebite Case", "Fracture Case", "Shattered Web Case",
@@ -23,35 +26,19 @@ user_data = {}
 json_data = "user_list.json"
 
 
-def time_spam(message):
-    x = ''
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
-    data = json_support.read_inf(json_data)
-    if user_id in data.keys() and len(data[user_id]) > 0:
-        for case in data[user_id]:
-            case_price = sm.get_item(730, case, currency='RUB')
-            x = f"{x + case}: {str(case_price['lowest_price'])} \n"
-        bot.send_message(message.chat.id, f"Your cases price:\n{x}")
-    else:
-        bot.send_message(message.chat.id, "You don't have cases in your list")
+@dp.message(F.text == '/start')
+async def cmd_start(message: Message):
+    await message.answer("Привет", reply_markup=kb.main)
 
 
-@bot.message_handler(commands=["start"])
-def start(message):
-    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.row("/Cases", "/Add_case", "/Update", "/Clear")
-    bot.send_message(message.chat.id, 'Hello', reply_markup=keyboard)
-
-
-@bot.message_handler(commands=["Clear"])
-def clear_list(message):
+@dp.message(F.text == '/clear')
+async def clear(message: Message):
     cases_list.clear()
-    bot.send_message(message.chat.id, text='You have successful cleared your list')
+    await message.answer("Локальный список ваших кейсов успешно очищен.")
 
 
-@bot.message_handler(commands=["cases", "Cases"])
-def cases(message):
+@dp.message(F.text == '/cases')
+async def cases(message: Message):
     x = ''
     user_id = message.from_user.id
     user_id = f"{user_id}"
@@ -60,21 +47,18 @@ def cases(message):
         for case in data[user_id]:
             case_price = sm.get_item(730, case, currency='RUB')
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
-        bot.send_message(message.chat.id, f"Your cases price:\n{x}")
+        await message.answer(f"Цены на ваши кейсы:\n{x}")
     else:
-        bot.send_message(message.chat.id, "You don't have cases in your list")
+        await message.answer("Вы не добавили кейсы")
 
 
-@bot.message_handler(commands=["Add_case"])
-def item_list(message):
-    markup = telebot.types.InlineKeyboardMarkup()
-    for btns in case_list:
-        markup.add(telebot.types.InlineKeyboardButton(text=btns, callback_data=btns))
-    bot.send_message(message.chat.id, text="What case do u want to add?", reply_markup=markup)
+@dp.message(F.text == "/add_case")
+async def item_list(message: Message):
+    await message.answer("Какой кейс вы хотите добавить?:", reply_markup=kb.cases)
 
 
-@bot.message_handler(commands=["Update"])
-def update(message):
+@dp.message(F.text == "/update")
+async def update(message):
     user_id = message.from_user.id
     user_id = f"{user_id}"
     data = json_support.read_inf(json_data)
@@ -82,22 +66,38 @@ def update(message):
         c = {user_id: cases_list}
         data.update(c)
         json_support.write_inf(data, json_data)
-        bot.send_message(message.chat.id, "Your list has been updated")
+        await message.answer("Вы успешно обновили список кейсов")
     else:
         c = {user_id: cases_list}
         data.update(c)
         json_support.write_inf(data, json_data)
-        bot.send_message(message.chat.id, "You have added your item list")
+        await message.answer("Вы успешно добавили ваш список кейсов")
         print(message.chat.first_name, "add a new dict in json")
 
 
-@bot.callback_query_handler(func=lambda call: True)
-def answer(call):
-    if call.data not in cases_list:
-        cases_list.append(call.data)
+@dp.callback_query()
+async def answer(callback: CallbackQuery):
+    if callback.data not in cases_list:
+        cases_list.append(callback.data)
     else:
         pass
     print(cases_list)
 
 
-bot.polling(none_stop=True)
+@dp.message(F.text == "/help")
+async def help(message: Message):
+    await message.answer(
+        "Commands:\n/start\n/cases - check your case list prices\n/add_case - add cases to your list\n/update - update your list in database")
+
+
+@dp.message()
+async def echo(message: Message):
+    await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
