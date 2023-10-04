@@ -45,6 +45,11 @@ async def add_user(callback: CallbackQuery, state: FSMContext):
     await state.set_state(NotificationOrder.time_add_notification_state)
 
 
+@router.callback_query(NotificationOrder.choosing_add_notification, F.data == "Time_add_no")
+async def answer_no(callback: CallbackQuery, state: FSMContext):
+    await callback.message.answer("Ну и хрен с тобой :(")
+
+
 @router.message(NotificationOrder.time_add_notification_state)
 async def time_adding(message: Message):
     user_id = message.from_user.id
@@ -55,10 +60,6 @@ async def time_adding(message: Message):
     data.update(c)
     json_support.write_inf(data, push_data)
     await message.answer(f"Вы добавили уведомление на {user_time}.")
-
-@router.callback_query(F.data == "Time_add_no")
-async def answer_no(callback: CallbackQuery):
-    await callback.message.answer("Ну и хрен с тобой :(")
 
 
 @router.message(F.text == '/clear')
