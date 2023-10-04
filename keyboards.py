@@ -51,3 +51,13 @@ cases_inline = [
     [InlineKeyboardButton(text="Revolution Case", callback_data="Revolution Case")],
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
+yes_no = [
+    [InlineKeyboardButton(text="Yes", callback_data="Time_add_yes")],
+    [InlineKeyboardButton(text="No", callback_data="Time_add_no")]
+]
+yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no)
+change_off = [
+    [InlineKeyboardButton(text="Change time", callback_data="change_time")],
+    [InlineKeyboardButton(text="Off notification", callback_data="off_notification")]
+]
+change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off)

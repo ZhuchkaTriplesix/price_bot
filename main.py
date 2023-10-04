@@ -1,4 +1,6 @@
 import asyncio
+import json
+
 import aiogram.types
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, CallbackQuery
@@ -14,11 +16,41 @@ dp = Dispatcher()
 cases_list = []
 user_data = {}
 json_data = "user_list.json"
+push_data = "users_time.json"
 
 
 @dp.message(F.text == '/start')
 async def cmd_start(message: Message):
     await message.answer("Привет", reply_markup=kb.main)
+
+
+@dp.message(F.text == "/notification")
+async def notification(message: Message):
+    user_id = message.from_user.id
+    user_id = f"{user_id}"
+    data = json_support.read_inf(push_data)
+    if user_id not in data.keys():
+        await message.answer("Хотите ли вы включить ежедневные уведомления?", reply_markup=kb.yes_no_keyboard)
+    else:
+        await message.answer(f"Что хотите?\nВаше текущее время уведомления: {data[user_id]}",
+                             reply_markup=kb.change_off_keyboard)
+
+
+@dp.callback_query(F.data == "Time_add_yes")
+async def add_user(callback: CallbackQuery):
+    await callback.message.answer("Напишите удобное для вас время")
+    user_id = callback.message.from_user.id
+    user_id = f"{user_id}"
+    data = json_support.read_inf(push_data)
+    user_time = callback.message.text
+    c = {user_id: user_time}
+    data.update(c)
+    json_support.write_inf(data, push_data)
+
+
+@dp.callback_query(F.data == "Time_add_no")
+async def answer_no(callback: CallbackQuery):
+    await callback.message.answer("Ну и хрен с тобой :(")
 
 
 @dp.message(F.text == '/clear')
@@ -47,6 +79,15 @@ async def item_list(message: Message):
     await message.answer("Какой кейс вы хотите добавить?:", reply_markup=kb.cases)
 
 
+@dp.callback_query()
+async def answer(callback: CallbackQuery):
+    if callback.data not in cases_list:
+        cases_list.append(callback.data)
+    else:
+        pass
+    print(cases_list)
+
+
 @dp.message(F.text == "/update")
 async def update(message):
     user_id = message.from_user.id
@@ -65,17 +106,8 @@ async def update(message):
         print(message.chat.first_name, "add a new dict in json")
 
 
-@dp.callback_query()
-async def answer(callback: CallbackQuery):
-    if callback.data not in cases_list:
-        cases_list.append(callback.data)
-    else:
-        pass
-    print(cases_list)
-
-
 @dp.message(F.text == "/help")
-async def help(message: Message):
+async def help_func(message: Message):
     await message.answer(
         "Commands:\n/start\n/cases - check your case list prices\n/add_case - add cases to your list\n/update - update your list in database")
 
