@@ -3,8 +3,9 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
 
 main_kb = [
     [KeyboardButton(text="/cases"),
-     KeyboardButton(text="/add_case")],
-    [KeyboardButton(text="/update"),
+     KeyboardButton(text="/add_case"),
+     KeyboardButton(text="/update")],
+    [KeyboardButton(text="/notification"),
      KeyboardButton(text="/clear")]
 ]
 
@@ -57,8 +58,8 @@ yes_no = [
 ]
 yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no)
 change_off = [
-    [InlineKeyboardButton(text="Change time", callback_data="change_time")],
-    [InlineKeyboardButton(text="Off notification", callback_data="off_notification")]
+    [InlineKeyboardButton(text="Поменять время", callback_data="change_time")],
+    [InlineKeyboardButton(text="Выключить уведомление", callback_data="off_notification")]
 ]
 change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off)
 
