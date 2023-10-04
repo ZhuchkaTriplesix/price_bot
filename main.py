@@ -11,17 +11,7 @@ with open("token.txt", "r") as TOKEN:
 
 bot = Bot(bot_token)
 dp = Dispatcher()
-case_list = ["CS:GO Weapon Case 3", "Shadow Case", "Operation Wildfire Case", "Falchion Case", "Horizon Case",
-             "Revolver Case", "Prisma Case", "Operation Vanguard Weapon Case", "Prisma 2 Case", "CS20 Case",
-             "Danger Zone Case", "Snakebite Case", "Fracture Case", "Shattered Web Case",
-             "Operation Phoenix Weapon Case", "Operation Broken Fang Case", "Chroma 2 Case", "Dreams & Nightmares Case",
-             "Spectrum Case", "Chroma 3 Case", "Clutch Case", "Chroma Case", "Spectrum 2 Case", "Gamma Case",
-             "eSports 2014 Summer Case", "Operation Riptide Case", "Gamma 2 Case", "Winter Offensive Weapon Case",
-             "eSports 2013 Winter Case", "CS:GO Weapon Case 2", "Huntsman Weapon Case", "Glove Case",
-             "Operation Breakout Weapon Case", "Operation Hydra Case", "Operation Bravo Case", "eSports 2013 Case",
-             "CS:GO Weapon Case"]
-
-cases_list = ["CS20 Case", "Danger Zone Case", "Clutch Case"]
+cases_list = []
 user_data = {}
 json_data = "user_list.json"
 
