@@ -6,6 +6,7 @@ import json_support
 import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
+from case_translation import case_translation
 
 router = Router()
 cases_list = []
@@ -77,6 +78,7 @@ async def cases(message: Message):
     if user_id in data.keys() and len(data[user_id]) > 0:
         for case in data[user_id]:
             case_price = sm.get_item(730, case, currency='RUB')
+            case = case_translation(case)
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
         await message.answer(f"Цены на ваши кейсы:\n{x}")
     else:
@@ -90,7 +92,8 @@ async def item_list(message: Message):
 
 @router.callback_query()
 async def answer(callback: CallbackQuery):
-    await callback.message.answer(f"Вы добавили {callback.data}, не забудьте обновить список /update.")
+    case = case_translation(callback.data)
+    await callback.message.answer(f"Вы добавили {case}, не забудьте обновить список /update.")
     if callback.data not in cases_list:
         cases_list.append(callback.data)
     else:
