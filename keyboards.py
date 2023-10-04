@@ -3,8 +3,9 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
 
 main_kb = [
     [KeyboardButton(text="/cases"),
-     KeyboardButton(text="/add_case")],
-    [KeyboardButton(text="/update"),
+     KeyboardButton(text="/add_case"),
+     KeyboardButton(text="/update")],
+    [KeyboardButton(text="/notification"),
      KeyboardButton(text="/clear")]
 ]
 
