@@ -1,6 +1,5 @@
 import asyncio
 import json
-
 import aiogram.types
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, CallbackQuery
@@ -71,7 +70,7 @@ async def cases(message: Message):
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
         await message.answer(f"Цены на ваши кейсы:\n{x}")
     else:
-        await message.answer("Вы не добавили кейсы")
+        await message.answer("Вы не добавили кейсы.")
 
 
 @dp.message(F.text == "/add_case")
@@ -81,6 +80,7 @@ async def item_list(message: Message):
 
 @dp.callback_query()
 async def answer(callback: CallbackQuery):
+    await callback.message.answer(f"Вы добавили {callback.data}, не забудьте обновить список /update.")
     if callback.data not in cases_list:
         cases_list.append(callback.data)
     else:
@@ -97,12 +97,14 @@ async def update(message):
         c = {user_id: cases_list}
         data.update(c)
         json_support.write_inf(data, json_data)
-        await message.answer("Вы успешно обновили список кейсов")
+        cases_list.clear()
+        await message.answer("Вы успешно обновили список кейсов.")
     else:
         c = {user_id: cases_list}
         data.update(c)
         json_support.write_inf(data, json_data)
-        await message.answer("Вы успешно добавили ваш список кейсов")
+        cases_list.clear()
+        await message.answer("Вы успешно добавили ваш список кейсов.")
         print(message.chat.first_name, "add a new dict in json")
 
 
@@ -114,7 +116,7 @@ async def help_func(message: Message):
 
 @dp.message()
 async def echo(message: Message):
-    await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start")
+    await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
 
 
 async def main():
