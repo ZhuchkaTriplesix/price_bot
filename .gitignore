@@ -1,4 +1,6 @@
 # Byte-compiled / optimized / DLL files
+users_time.json
+user_list.json
 __pycache__/
 *.py[cod]
 *$py.class
@@ -6,7 +8,7 @@ token.txt
 cases.json
 .idea
 # C extensions
-user_list.json
+
 *.so
 .idea/.gitignore
 .idea/inspectionProfiles/profiles_settings.xml
@@ -14,10 +16,9 @@ user_list.json
 .idea/modules.xml
 .idea/price_bot.iml
 .idea/vcs.xml
-token.txt
 users.db
 .DS_Store
-user_list.json
+
 
 # Distribution / packaging
 .Python
