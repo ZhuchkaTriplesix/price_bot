@@ -9,7 +9,6 @@ from aiogram.fsm.context import FSMContext
 from case_translation import case_translation
 
 router = Router()
-cases_list = []
 user_data = {}
 json_data = "user_list.json"
 push_data = "users_time.json"
@@ -94,7 +93,11 @@ async def delete_notification(callback: CallbackQuery):
 
 @router.message(F.text == '/clear')
 async def clear(message: Message):
-    cases_list.clear()
+    data = json_support.read_inf(json_data)
+    user_id = message.from_user.id
+    user_id = f"{user_id}"
+    del data[user_id]
+    json_support.write_inf(data, json_data)
     await message.answer("Локальный список ваших кейсов успешно очищен.")
 
 
@@ -121,33 +124,24 @@ async def item_list(message: Message):
 
 @router.callback_query()
 async def answer(callback: CallbackQuery):
+    user_id = callback.message.chat.id
+    user_id = f"{user_id}"
     case = case_translation(callback.data)
-    await callback.message.answer(f"Вы добавили {case}, не забудьте обновить список /update.")
-    if callback.data not in cases_list:
-        cases_list.append(callback.data)
+    await callback.message.answer(f"Вы добавили {case}.")
+    data = json_support.read_inf(json_data)
+    cases_list =[]
+    if user_id in data.keys():
+        cases_list = data[user_id]
     else:
         pass
-    print(cases_list)
-
-
-@router.message(F.text == "/update")
-async def update(message):
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
-    data = json_support.read_inf(json_data)
-    if user_id in data.keys():
+    if callback.data not in cases_list or user_id not in data.keys():
+        cases_list.append(callback.data)
         c = {user_id: cases_list}
         data.update(c)
         json_support.write_inf(data, json_data)
-        cases_list.clear()
-        await message.answer("Вы успешно обновили список кейсов.")
+        print(f"{user_id},{callback.message.chat.first_name} add {case}")
     else:
-        c = {user_id: cases_list}
-        data.update(c)
-        json_support.write_inf(data, json_data)
-        cases_list.clear()
-        await message.answer("Вы успешно добавили ваш список кейсов.")
-        print(message.chat.first_name, "add a new dict in json")
+        pass
 
 
 @router.message(F.text == "/help")
