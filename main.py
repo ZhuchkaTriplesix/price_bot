@@ -1,9 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from handlers.client import router
-
-cases_list = []
-user_data = {}
 json_data = "user_list.json"
 push_data = "users_time.json"
 
@@ -14,7 +11,7 @@ async def main():
     bot = Bot(bot_token)
     dp = Dispatcher()
     dp.include_router(router)
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, skip_updates=True)
 
 
 if __name__ == "__main__":

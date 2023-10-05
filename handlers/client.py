@@ -66,7 +66,6 @@ async def time_adding(message: Message):
     await message.answer(f"Вы добавили уведомление на {user_time}.")
 
 
-
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "change_time")
 async def edit_notification(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -136,7 +135,7 @@ async def answer(callback: CallbackQuery):
     case = case_translation(callback.data)
     await callback.message.answer(f"Вы добавили {case}.")
     data = json_support.read_inf(json_data)
-    cases_list =[]
+    cases_list = []
     if user_id in data.keys():
         cases_list = data[user_id]
     else:
@@ -154,7 +153,8 @@ async def answer(callback: CallbackQuery):
 @router.message(F.text == "/help")
 async def help_func(message: Message):
     await message.answer(
-        "Commands:\n/start\n/cases - check your case list prices\n/add_case - add cases to your list\n/update - update your list in database")
+        "Commands:\n/start\n/cases - Проверить цены\n/add_case - Добавить кейс\n"
+        "/notification - Добавить/удалить уведомление\n/clear - Очистить список кейсов")
 
 
 @router.message()

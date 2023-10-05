@@ -4,8 +4,8 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
 main_kb = [
     [KeyboardButton(text="/cases"),
      KeyboardButton(text="/add_case")],
-    [KeyboardButton(text="/notification"),
-     KeyboardButton(text="/clear")]
+    [
+        KeyboardButton(text="/clear")]
 ]
 
 main = ReplyKeyboardMarkup(keyboard=main_kb, resize_keyboard=True)
@@ -52,8 +52,8 @@ cases_inline = [
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
 yes_no = [
-    [InlineKeyboardButton(text="Yes", callback_data="Time_add_yes")],
-    [InlineKeyboardButton(text="No", callback_data="Time_add_no")]
+    [InlineKeyboardButton(text="Да", callback_data="Time_add_yes")],
+    [InlineKeyboardButton(text="Нет", callback_data="Time_add_no")]
 ]
 yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no, one_time_keyboiard=True)
 change_off = [
@@ -62,4 +62,4 @@ change_off = [
 ]
 change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_keyboiard=True)
 
-#a nahui ti eto chitaesh?
+# a nah ui ti eto chimaera?
