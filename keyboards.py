@@ -4,8 +4,8 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
 main_kb = [
     [KeyboardButton(text="/cases"),
      KeyboardButton(text="/add_case")],
-    [KeyboardButton(text="/notification"),
-     KeyboardButton(text="/clear")]
+    [
+        KeyboardButton(text="/clear")]
 ]
 
 main = ReplyKeyboardMarkup(keyboard=main_kb, resize_keyboard=True)
