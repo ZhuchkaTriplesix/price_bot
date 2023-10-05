@@ -1,7 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from handlers.client import router
-
 json_data = "user_list.json"
 push_data = "users_time.json"
 
