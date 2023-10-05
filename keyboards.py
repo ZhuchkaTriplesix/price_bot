@@ -55,11 +55,11 @@ yes_no = [
     [InlineKeyboardButton(text="Yes", callback_data="Time_add_yes")],
     [InlineKeyboardButton(text="No", callback_data="Time_add_no")]
 ]
-yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no)
+yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no, one_time_keyboiard=True)
 change_off = [
     [InlineKeyboardButton(text="Поменять время", callback_data="change_time")],
     [InlineKeyboardButton(text="Выключить уведомление", callback_data="off_notification")]
 ]
-change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off)
+change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_keyboiard=True)
 
 #a nahui ti eto chitaesh?
