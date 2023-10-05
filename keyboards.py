@@ -24,7 +24,7 @@ cases_inline = [
     [InlineKeyboardButton(text="Оружейный кейс операции «Авангард»", callback_data="Operation Vanguard Weapon Case")],
     [InlineKeyboardButton(text="Хромированный кейс", callback_data="Chroma Case")],
     [InlineKeyboardButton(text="Хромированный кейс #2", callback_data="Chroma 2 Case")],
-    [InlineKeyboardButton(text="Кейс «Фальшион»", callback_data="Falchion Case")],
+    [InlineKeyboardButton(text="Кейс «Фальшион»", callback_data="Falcon Case")],
     [InlineKeyboardButton(text="Тёмный кейс", callback_data="Shadow Case")],
     [InlineKeyboardButton(text="Револьверный кейс", callback_data="Revolver Case")],
     [InlineKeyboardButton(text="Кейс операции «Дикое пламя»", callback_data="Operation Wildfire Case")],
@@ -62,4 +62,4 @@ change_off = [
 ]
 change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_keyboiard=True)
 
-#a nahui ti eto chitaesh?
+# a nah ui ti eto chimaera?

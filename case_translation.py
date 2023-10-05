@@ -28,7 +28,7 @@ def case_translation(callback_name):
         rus_name = "Хромированный кейс"
     elif callback_name == "Chroma 2 Case":
         rus_name = "Хромированный кейс #2"
-    elif callback_name == "Falchion Case":
+    elif callback_name == "Falcon Case":
         rus_name = "Кейс «Фальшион»"
     elif callback_name == "Revolver Case":
         rus_name = "Револьверный кейс"
