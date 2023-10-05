@@ -24,7 +24,7 @@ cases_inline = [
     [InlineKeyboardButton(text="Оружейный кейс операции «Авангард»", callback_data="Operation Vanguard Weapon Case")],
     [InlineKeyboardButton(text="Хромированный кейс", callback_data="Chroma Case")],
     [InlineKeyboardButton(text="Хромированный кейс #2", callback_data="Chroma 2 Case")],
-    [InlineKeyboardButton(text="Кейс «Фальшион»", callback_data="Falcon Case")],
+    [InlineKeyboardButton(text="Кейс «Фальшион»", callback_data="Falchion Case")],
     [InlineKeyboardButton(text="Тёмный кейс", callback_data="Shadow Case")],
     [InlineKeyboardButton(text="Револьверный кейс", callback_data="Revolver Case")],
     [InlineKeyboardButton(text="Кейс операции «Дикое пламя»", callback_data="Operation Wildfire Case")],
@@ -52,8 +52,8 @@ cases_inline = [
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
 yes_no = [
-    [InlineKeyboardButton(text="Yes", callback_data="Time_add_yes")],
-    [InlineKeyboardButton(text="No", callback_data="Time_add_no")]
+    [InlineKeyboardButton(text="Да", callback_data="Time_add_yes")],
+    [InlineKeyboardButton(text="Нет", callback_data="Time_add_no")]
 ]
 yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no, one_time_keyboiard=True)
 change_off = [
