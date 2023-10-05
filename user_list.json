@@ -1,10 +1,4 @@
 {
-    "736491563": [
-        "Clutch Case",
-        "CS20 Case",
-        "Danger Zone Case",
-        "Operation Breakout Weapon Case"
-    ],
     "6643425631": [
         "Fracture Case",
         "Operation Broken Fang Case",
@@ -28,5 +22,10 @@
         "Dreams & Nightmares Case",
         "Snakebite Case",
         "Prisma Case"
+    ],
+    "736491563": [
+        "Snakebite Case",
+        "Operation Riptide Case",
+        "off_notification"
     ]
 }

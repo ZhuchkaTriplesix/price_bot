@@ -74,7 +74,7 @@ def case_translation(callback_name):
         rus_name = "Кейс операции «Хищные воды»"
     elif callback_name == "Dreams & Nightmares Case":
         rus_name = "Кейс «Грёзы и кошмары»"
-    elif callback_name == "Recoil Cas":
+    elif callback_name == "Recoil Case":
         rus_name = "Recoil Case"
     elif callback_name == "Revolution Case":
         rus_name = "Revolution Case"
