@@ -153,8 +153,8 @@ async def answer(callback: CallbackQuery):
 @router.message(F.text == "/help")
 async def help_func(message: Message):
     await message.answer(
-        "Commands:\n/start\n/cases - Проверить цены\n/add_case - Добавить кейс list\n"
-        "/notification - Добавить/удалить уведомление")
+        "Commands:\n/start\n/cases - Проверить цены\n/add_case - Добавить кейс\n"
+        "/notification - Добавить/удалить уведомление\n/clear - Очистить список кейсов")
 
 
 @router.message()
