@@ -62,4 +62,10 @@ change_off = [
 ]
 change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_keyboiard=True)
 
-# a nah ui ti eto chimaera?
+admin_keyboard = [
+    [KeyboardButton(text="/start"),
+     KeyboardButton(text="/add_admin")],
+    [
+        KeyboardButton(text="/kill")]
+]
+admin = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
