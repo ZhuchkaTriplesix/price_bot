@@ -28,8 +28,7 @@ async def cmd_start(message: Message):
 
 @router.message(F.text == "/notification")
 async def notification(message: Message, state: FSMContext):
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
+    user_id = f"{message.from_user.id}"
     data = json_support.read_inf(push_data)
     if user_id not in data.keys():
         await message.answer("Хотите ли вы включить ежедневные уведомления?", reply_markup=kb.yes_no_keyboard)
@@ -55,8 +54,7 @@ async def answer_no(callback: CallbackQuery):
 
 @router.message(NotificationOrder.time_add_notification_state)
 async def time_adding(message: Message):
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
+    user_id = f"{message.from_user.id}"
     data = json_support.read_inf(push_data)
     user_time = message.text
     c = {user_id: user_time}
@@ -75,8 +73,7 @@ async def edit_notification(callback: CallbackQuery, state: FSMContext):
 
 @router.message(NotificationOrder.response_notification_state)
 async def time_change_notification(message: Message):
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
+    user_id = f"{message.from_user.id}"
     data = json_support.read_inf(push_data)
     user_time = message.text
     c = {user_id: user_time}
@@ -88,8 +85,7 @@ async def time_change_notification(message: Message):
 
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "off_notification")
 async def delete_notification(callback: CallbackQuery):
-    user_id = callback.message.chat.id
-    user_id = f"{user_id}"
+    user_id = f"{callback.message.chat.id}"
     data = json_support.read_inf(push_data)
     del data[user_id]
     json_support.write_inf(data, push_data)
@@ -100,8 +96,7 @@ async def delete_notification(callback: CallbackQuery):
 @router.message(F.text == '/clear')
 async def clear(message: Message):
     data = json_support.read_inf(json_data)
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
+    user_id = f"{message.from_user.id}"
     del data[user_id]
     json_support.write_inf(data, json_data)
     await message.answer("Локальный список ваших кейсов успешно очищен.")
@@ -110,8 +105,7 @@ async def clear(message: Message):
 @router.message(F.text == '/cases')
 async def cases(message: Message):
     x = ''
-    user_id = message.from_user.id
-    user_id = f"{user_id}"
+    user_id = f"{message.from_user.id}"
     data = json_support.read_inf(json_data)
     if user_id in data.keys() and len(data[user_id]) > 0:
         for case in data[user_id]:
