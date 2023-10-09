@@ -125,7 +125,7 @@ async def change_status(message: Message, state: FSMContext):
 
 @router.callback_query(AdminAddStatus.group_change_callback, F.data == "Kurator")
 async def change_group_callback(callback: CallbackQuery):
-    admin_id = admins_id[0]
+    admin_id = f"{admins_id[0]}"
     data = json_support.read_inf(admins)
     group = callback.data
     user_group = {admin_id: group}
@@ -138,7 +138,7 @@ async def change_group_callback(callback: CallbackQuery):
 
 @router.callback_query(AdminAddStatus.group_change_callback, F.data == "Owner")
 async def change_group_callback(callback: CallbackQuery):
-    admin_id = admins_id[0]
+    admin_id = f"{admins_id[0]}"
     data = json_support.read_inf(admins)
     group = callback.data
     user_group = {admin_id: group}
