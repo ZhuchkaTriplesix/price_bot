@@ -64,6 +64,11 @@ async def id_add(message: Message, state: FSMContext):
     print(data)
 
 
+@router.message(F.text == "/back")
+async def main_menu_back(message: Message):
+    await message.answer("Основное меню", reply_markup=kb.main)
+
+
 @router.message()
 async def echo(message: Message):
     await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
