@@ -99,6 +99,7 @@ async def delete_admin(message: Message, state: FSMContext):
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
 
+
 @router.message(AdminAddStatus.delete_admin, F.text)
 async def id_add(message: Message, state: FSMContext):
     user_id = message.text
