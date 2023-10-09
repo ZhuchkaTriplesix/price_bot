@@ -17,12 +17,17 @@ class AdminAddStatus(StatesGroup):
     id_add = State()
     group_add = State()
 
+
 @router.message(F.text == "/admin")
 async def admin_menu(message: Message):
     admin_data = json_support.read_inf(admins)
     user_id = f"{message.from_user.id}"
     if user_id in admin_data.keys():
         await message.answer("Админ меню", reply_markup=kb.admin)
+    else:
+        await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
+
 @router.message(F.text == "/kill")
 async def kill_process(message: Message):
     admin_data = json_support.read_inf(admins)
