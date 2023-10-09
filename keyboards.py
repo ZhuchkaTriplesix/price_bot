@@ -62,10 +62,17 @@ change_off = [
 ]
 change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_keyboiard=True)
 
-admin_keyboard = [
-    [KeyboardButton(text="/start"),
-     KeyboardButton(text="/add_admin")],
+owner_keyboard = [
+    [KeyboardButton(text="/add_admin"),
+     KeyboardButton(text="/delete_admin"),
+     KeyboardButton(text="/admin_list")],
     [
-        KeyboardButton(text="/kill")]
+     KeyboardButton(text="/kill"),
+     KeyboardButton(text="/back")]
 ]
-admin = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
+owners_kb = ReplyKeyboardMarkup(keyboard=owner_keyboard, resize_keyboard=True)
+admin_keyboard = [
+    [KeyboardButton(text="/admin_list"),
+     KeyboardButton(text="/back")]
+]
+admins_kb= ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
