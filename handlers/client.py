@@ -7,7 +7,6 @@ import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from case_translation import case_translation
-import sys
 
 router = Router()
 user_data = {}
@@ -20,13 +19,6 @@ class NotificationOrder(StatesGroup):
     choosing_add_notification = State()  # used
     response_notification_state = State()
     time_add_notification_state = State()  # used
-
-
-@router.message(F.text == '/kill')
-async def kill_process(message: Message):
-    user_id = message.from_user.id
-    if message.from_user.id == 736491563 or message.from_user.id == 6643425631:
-        sys.exit()
 
 
 @router.message(F.text == '/start')
@@ -72,6 +64,8 @@ async def time_adding(message: Message):
     json_support.write_inf(data, push_data)
     await message.delete()
     await message.answer(f"Вы добавили уведомление на {user_time}.")
+
+
 
 
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "change_time")
@@ -165,6 +159,4 @@ async def help_func(message: Message):
         "/notification - Добавить/удалить уведомление\n/clear - Очистить список кейсов")
 
 
-@router.message()
-async def echo(message: Message):
-    await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
