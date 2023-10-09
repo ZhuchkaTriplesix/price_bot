@@ -60,13 +60,14 @@ async def add_admin(message: Message, state: FSMContext):
 
 
 @router.message(AdminAddStatus.id_add, F.text)
-async def id_add(message: Message):
+async def id_add(message: Message, state: FSMContext):
     user_id = message.text
     data = json_support.read_inf(admins)
     us = {user_id: "Admin"}
     data.update(us)
     json_support.write_inf(data, admins)
     await message.answer(f"Вы выдали админ доступ {user_id}")
+    await state.clear()
 
 
 @router.message(F.text == "/back")
@@ -124,7 +125,7 @@ async def change_status(message: Message, state: FSMContext):
 
 
 @router.callback_query(AdminAddStatus.group_change_callback, F.data == "Kurator")
-async def change_group_callback(callback: CallbackQuery):
+async def change_group_callback(callback: CallbackQuery, state: FSMContext):
     admin_id = f"{admins_id[0]}"
     data = json_support.read_inf(admins)
     group = callback.data
@@ -134,10 +135,11 @@ async def change_group_callback(callback: CallbackQuery):
     await callback.message.delete()
     await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
     admins_id.clear()
+    await state.clear()
 
 
 @router.callback_query(AdminAddStatus.group_change_callback, F.data == "Owner")
-async def change_group_callback(callback: CallbackQuery):
+async def change_group_callback(callback: CallbackQuery, state: FSMContext):
     admin_id = f"{admins_id[0]}"
     data = json_support.read_inf(admins)
     group = callback.data
@@ -147,6 +149,7 @@ async def change_group_callback(callback: CallbackQuery):
     await callback.message.delete()
     await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
     admins_id.clear()
+    await state.clear()
 
 
 @router.message(AdminAddStatus.delete_admin, F.text)

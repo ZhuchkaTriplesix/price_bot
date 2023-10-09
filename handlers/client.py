@@ -53,7 +53,7 @@ async def answer_no(callback: CallbackQuery):
 
 
 @router.message(NotificationOrder.time_add_notification_state)
-async def time_adding(message: Message):
+async def time_adding(message: Message, state: FSMContext):
     user_id = f"{message.from_user.id}"
     data = json_support.read_inf(push_data)
     user_time = message.text
@@ -62,6 +62,7 @@ async def time_adding(message: Message):
     json_support.write_inf(data, push_data)
     await message.delete()
     await message.answer(f"Вы добавили уведомление на {user_time}.")
+    await state.clear()
 
 
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "change_time")
@@ -72,7 +73,7 @@ async def edit_notification(callback: CallbackQuery, state: FSMContext):
 
 
 @router.message(NotificationOrder.response_notification_state)
-async def time_change_notification(message: Message):
+async def time_change_notification(message: Message, state: FSMContext):
     user_id = f"{message.from_user.id}"
     data = json_support.read_inf(push_data)
     user_time = message.text
@@ -81,6 +82,7 @@ async def time_change_notification(message: Message):
     json_support.write_inf(data, push_data)
     await message.delete()
     await message.answer(f"Вы успешно поменяли время на {user_time}.")
+    await state.clear()
 
 
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "off_notification")
