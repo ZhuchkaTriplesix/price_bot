@@ -65,7 +65,8 @@ change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
      KeyboardButton(text="/delete_admin"),
-     KeyboardButton(text="/admin_list")],
+     KeyboardButton(text="/admin_list"),
+     KeyboardButton(text="/change_group")],
     [
      KeyboardButton(text="/kill"),
      KeyboardButton(text="/back")]
