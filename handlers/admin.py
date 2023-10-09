@@ -69,6 +69,23 @@ async def main_menu_back(message: Message):
     await message.answer("Основное меню", reply_markup=kb.main)
 
 
+@router.message(F.text == "/admin_list")
+async def admin_list(message: Message):
+    x = ''
+    user_id = f"{message.from_user.id}"
+    admin_data = json_support.read_inf(admins)
+    if user_id in admin_data.keys():
+        if admin_data[user_id] not in "Owner":
+            await message.answer("У вас недостаточно прав")
+        else:
+            for admin in admin_data:
+                status = admin_data[admin]
+                x = f"{x + admin}: {status} \n"
+            await message.answer(x)
+    else:
+        await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
+
 @router.message()
 async def echo(message: Message):
     await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
