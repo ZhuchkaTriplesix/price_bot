@@ -101,6 +101,7 @@ async def delete_admin(message: Message, state: FSMContext):
             await state.set_state(AdminAddStatus.delete_admin)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+    await state.clear()
 
 
 @router.message(F.text == "/change_group")
