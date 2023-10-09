@@ -1,6 +1,6 @@
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message
 import json_support
 import keyboards as kb
 from aiogram import Router
@@ -60,7 +60,6 @@ async def add_admin(message: Message, state: FSMContext):
 async def id_add(message: Message, state: FSMContext):
     user_id = message.text
     data = json_support.read_inf(admins)
-    us = {}
     us = {user_id: "Admin"}
     data.update(us)
     json_support.write_inf(data, admins)
