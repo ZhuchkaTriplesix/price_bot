@@ -17,7 +17,12 @@ class AdminAddStatus(StatesGroup):
     id_add = State()
     group_add = State()
 
-
+@router.message(F.text == "/admin")
+async def admin_menu(message: Message):
+    admin_data = json_support.read_inf(admins)
+    user_id = f"{message.from_user.id}"
+    if user_id in admin_data.keys():
+        await message.answer("Админ меню", reply_markup=kb.admin)
 @router.message(F.text == "/kill")
 async def kill_process(message: Message):
     admin_data = json_support.read_inf(admins)
@@ -42,6 +47,7 @@ async def add_admin(message: Message, state: FSMContext):
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
 
+
 @router.message(AdminAddStatus.id_add, F.text)
 async def id_add(message: Message, state: FSMContext):
     user_id = message.text
@@ -51,6 +57,7 @@ async def id_add(message: Message, state: FSMContext):
     data.update(us)
     json_support.write_inf(data, admins)
     print(data)
+
 
 @router.message()
 async def echo(message: Message):

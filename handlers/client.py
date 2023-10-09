@@ -66,8 +66,6 @@ async def time_adding(message: Message):
     await message.answer(f"Вы добавили уведомление на {user_time}.")
 
 
-
-
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "change_time")
 async def edit_notification(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
@@ -157,6 +155,3 @@ async def help_func(message: Message):
     await message.answer(
         "Commands:\n/start\n/cases - Проверить цены\n/add_case - Добавить кейс\n"
         "/notification - Добавить/удалить уведомление\n/clear - Очистить список кейсов")
-
-
-
