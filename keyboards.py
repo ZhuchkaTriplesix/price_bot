@@ -75,4 +75,9 @@ admin_keyboard = [
     [KeyboardButton(text="/admin_list"),
      KeyboardButton(text="/back")]
 ]
-admins_kb= ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
+admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
+change_status = [
+    [InlineKeyboardButton(text="Куратор", callback_data="Kurator")],
+    [InlineKeyboardButton(text="Владелец", callback_data="Owner")]
+]
+change_status_kb = InlineKeyboardMarkup(inline_keyboard=change_status)
