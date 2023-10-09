@@ -66,6 +66,6 @@ admin_keyboard = [
     [KeyboardButton(text="/start"),
      KeyboardButton(text="/add_admin")],
     [
-        KeyboardButton(text="/kill")]
+     KeyboardButton(text="/kill")]
 ]
 admin = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
