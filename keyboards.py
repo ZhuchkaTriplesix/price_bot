@@ -65,7 +65,8 @@ change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
      KeyboardButton(text="/delete_admin"),
-     KeyboardButton(text="/admin_list")],
+     KeyboardButton(text="/admin_list"),
+     KeyboardButton(text="/change_group")],
     [
      KeyboardButton(text="/kill"),
      KeyboardButton(text="/back")]
@@ -75,4 +76,9 @@ admin_keyboard = [
     [KeyboardButton(text="/admin_list"),
      KeyboardButton(text="/back")]
 ]
-admins_kb= ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
+admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
+change_status = [
+    [InlineKeyboardButton(text="Куратор", callback_data="Kurator")],
+    [InlineKeyboardButton(text="Владелец", callback_data="Owner")]
+]
+change_status_kb = InlineKeyboardMarkup(inline_keyboard=change_status)
