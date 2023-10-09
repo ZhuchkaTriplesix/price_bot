@@ -7,6 +7,7 @@ import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from case_translation import case_translation
+import sys
 
 router = Router()
 user_data = {}
@@ -19,6 +20,13 @@ class NotificationOrder(StatesGroup):
     choosing_add_notification = State()  # used
     response_notification_state = State()
     time_add_notification_state = State()  # used
+
+
+@router.message(F.text == '/kill')
+async def kill_process(message: Message):
+    user_id = message.from_user.id
+    if message.from_user.id == 736491563 or message.from_user.id == 6643425631:
+        sys.exit()
 
 
 @router.message(F.text == '/start')
