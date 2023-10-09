@@ -16,6 +16,7 @@ router = Router()
 class AdminAddStatus(StatesGroup):
     id_add = State()
     group_add = State()
+    delete_admin = State()
 
 
 @router.message(F.text == "/admin")
@@ -63,7 +64,7 @@ async def id_add(message: Message, state: FSMContext):
     us = {user_id: "Admin"}
     data.update(us)
     json_support.write_inf(data, admins)
-    print(data)
+    await message.answer(f"Вы выдали админ доступ {user_id}")
 
 
 @router.message(F.text == "/back")
@@ -83,6 +84,28 @@ async def admin_list(message: Message):
         await message.answer(x)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
+
+@router.message(F.text == "/delete_admin")
+async def delete_admin(message: Message, state: FSMContext):
+    user_id = f"{message.from_user.id}"
+    admin_data = json_support.read_inf(admins)
+    if user_id in admin_data.keys():
+        if admin_data[user_id] not in "Owner":
+            await message.answer("У вас недостаточно прав")
+        else:
+            await message.answer("Введите телеграм айди пользователя")
+            await state.set_state(AdminAddStatus.delete_admin)
+    else:
+        await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
+@router.message(AdminAddStatus.delete_admin, F.text)
+async def id_add(message: Message, state: FSMContext):
+    user_id = message.text
+    data = json_support.read_inf(admins)
+    del data[user_id]
+    json_support.write_inf(data, admins)
+    await message.answer(f"Вы убрали админ доступ у {user_id}")
 
 
 @router.message()
