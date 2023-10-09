@@ -23,7 +23,10 @@ async def admin_menu(message: Message):
     admin_data = json_support.read_inf(admins)
     user_id = f"{message.from_user.id}"
     if user_id in admin_data.keys():
-        await message.answer("Админ меню", reply_markup=kb.admin)
+        if admin_data[user_id] not in "Owner":
+            await message.answer("Админ меню", reply_markup=kb.admins_kb)
+        else:
+            await message.answer("Админ меню", reply_markup=kb.owners_kb)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
 
@@ -75,13 +78,10 @@ async def admin_list(message: Message):
     user_id = f"{message.from_user.id}"
     admin_data = json_support.read_inf(admins)
     if user_id in admin_data.keys():
-        if admin_data[user_id] not in "Owner":
-            await message.answer("У вас недостаточно прав")
-        else:
-            for admin in admin_data:
-                status = admin_data[admin]
-                x = f"{x + admin}: {status} \n"
-            await message.answer(x)
+        for admin in admin_data:
+            status = admin_data[admin]
+            x = f"{x + admin}: {status} \n"
+        await message.answer(x)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
 
