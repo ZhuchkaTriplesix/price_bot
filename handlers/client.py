@@ -18,7 +18,7 @@ admins = "admins.json"
 class NotificationOrder(StatesGroup):
     choosing_notification = State()  # used
     choosing_add_notification = State()  # used
-    response_notification_state = State()  #used
+    response_notification_state = State()  # used
     time_add_notification_state = State()  # used
 
 

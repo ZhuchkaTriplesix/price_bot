@@ -49,7 +49,7 @@ cases_inline = [
     [InlineKeyboardButton(text="Кейс операции «Хищные воды»", callback_data="Operation Riptide Case")],
     [InlineKeyboardButton(text="Кейс «Грёзы и кошмары»", callback_data="Dreams & Nightmares Case")],
     [InlineKeyboardButton(text="Recoil Case", callback_data="Recoil Case")],
-    [InlineKeyboardButton(text="Revolution Case", callback_data="Revolution Case")],
+    [InlineKeyboardButton(text="Revolution Case", callback_data="Revolution Case")]
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
 yes_no = [
@@ -81,13 +81,15 @@ admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 owner_vips_keyboard = [
     [KeyboardButton(text="/check_vip"),
      KeyboardButton(text="/change_vip")],
-    [KeyboardButton(text="/back")]
+    [KeyboardButton(text="/vip_list"),
+     KeyboardButton(text="/back")]
 ]
 owners_vip_kb = ReplyKeyboardMarkup(keyboard=owner_vips_keyboard, resize_keyboard=True)
 admin_vips_keyboard = [
     [KeyboardButton(text="/check_vip"),
      KeyboardButton(text="/change_vip")],
-    [KeyboardButton(text="/back")]
+    [KeyboardButton(text="/vip_list"),
+     KeyboardButton(text="/back")]
 ]
 admins_vip_kb = ReplyKeyboardMarkup(keyboard=admin_vips_keyboard, resize_keyboard=True)
 user_vip_keyboard = [

@@ -20,9 +20,6 @@ class AdminAddStatus(StatesGroup):
     delete_admin = State()
     group_change_callback = State()
 
-    group_change = State()
-
-
 
 @router.message(F.text == "/admin")
 async def admin_menu(message: Message):
@@ -104,6 +101,15 @@ async def delete_admin(message: Message, state: FSMContext):
             await state.set_state(AdminAddStatus.delete_admin)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
+
+@router.message(AdminAddStatus.delete_admin, F.text)
+async def id_add(message: Message, state: FSMContext):
+    user_id = message.text
+    data = json_support.read_inf(admins)
+    del data[user_id]
+    json_support.write_inf(data, admins)
+    await message.answer(f"Вы убрали админ доступ у {user_id}")
     await state.clear()
 
 
@@ -153,16 +159,6 @@ async def change_group_callback(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
     admins_id.clear()
-    await state.clear()
-
-
-@router.message(AdminAddStatus.delete_admin, F.text)
-async def id_add(message: Message):
-    user_id = message.text
-    data = json_support.read_inf(admins)
-    del data[user_id]
-    json_support.write_inf(data, admins)
-    await message.answer(f"Вы убрали админ доступ у {user_id}")
     await state.clear()
 
 
