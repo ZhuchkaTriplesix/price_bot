@@ -110,6 +110,7 @@ async def id_add(message: Message, state: FSMContext):
     del data[user_id]
     json_support.write_inf(data, admins)
     await message.answer(f"Вы убрали админ доступ у {user_id}")
+    await state.clear()
 
 
 @router.message(F.text == "/change_group")
