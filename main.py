@@ -12,6 +12,7 @@ async def main():
     bot = Bot(bot_token)
     dp = Dispatcher()
     dp.include_routers(admin.router, vip.router, client.router) #routers add
+    dp.include_routers(admin.router, client.router)#routers add
     await dp.start_polling(bot, skip_updates=True)
 
 

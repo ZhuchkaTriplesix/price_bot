@@ -16,10 +16,11 @@ admins_id = []
 
 class AdminAddStatus(StatesGroup):
     id_add = State()
-    group_add = State()
+    group_change = State()
     delete_admin = State()
     group_change_callback = State()
     group_change = State()
+
 
 
 @router.message(F.text == "/admin")
@@ -68,6 +69,7 @@ async def id_add(message: Message, state: FSMContext):
     data.update(us)
     json_support.write_inf(data, admins)
     await message.answer(f"Вы выдали админ доступ {user_id}")
+    await state.clear()
 
 
 @router.message(F.text == "/back")
@@ -101,10 +103,61 @@ async def delete_admin(message: Message, state: FSMContext):
             await state.set_state(AdminAddStatus.delete_admin)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+    await state.clear()
+
+
+@router.message(F.text == "/change_group")
+async def change_group(message: Message, state: FSMContext):
+    data = json_support.read_inf(admins)
+    user_id = f"{message.from_user.id}"
+    if user_id in data.keys():
+        if data[user_id] not in "Owner":
+            await message.answer("У вас недостаточно прав")
+        else:
+            await message.answer("Введите телеграм айди пользователя")
+            await state.set_state(AdminAddStatus.group_change)
+    else:
+        await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
+
+
+@router.message(AdminAddStatus.group_change, F.text)
+async def change_status(message: Message, state: FSMContext):
+    admins_id.append(message.text)
+    await message.answer("На какую группу, вы хотите поменять?", reply_markup=kb.change_status_kb)
+    await state.set_state(AdminAddStatus.group_change_callback)
+
+
+@router.callback_query(AdminAddStatus.group_change_callback, F.data == "Kurator")
+async def change_group_callback(callback: CallbackQuery, state: FSMContext):
+    admin_id = f"{admins_id[0]}"
+    data = json_support.read_inf(admins)
+    group = callback.data
+    user_group = {admin_id: group}
+    data.update(user_group)
+    json_support.write_inf(data, admins)
+    await callback.message.delete()
+    await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
+    admins_id.clear()
+    await state.clear()
+
+
+@router.callback_query(AdminAddStatus.group_change_callback, F.data == "Owner")
+async def change_group_callback(callback: CallbackQuery, state: FSMContext):
+    admin_id = f"{admins_id[0]}"
+    data = json_support.read_inf(admins)
+    group = callback.data
+    user_group = {admin_id: group}
+    data.update(user_group)
+    json_support.write_inf(data, admins)
+    await callback.message.delete()
+    await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
+    admins_id.clear()
+    await state.clear()
+
 
 
 @router.message(AdminAddStatus.delete_admin, F.text)
-async def id_add(message: Message, state: FSMContext):
+async def id_add(message: Message):
     user_id = message.text
     data = json_support.read_inf(admins)
     del data[user_id]
