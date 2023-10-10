@@ -1,6 +1,6 @@
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 import json_support
 import keyboards as kb
 from aiogram import Router
@@ -10,11 +10,14 @@ json_data = "user_list.json"
 push_data = "users_time.json"
 admins = "admins.json"
 router = Router()
+vip_id = []
 
 
 class VipStatusState(StatesGroup):
     change_vip_state = State()
     change_vip_callback_state = State()
+    vip_add_state = State()
+    vip_delete_state = State()
 
 
 @router.message(F.text == "/check_vip")
@@ -44,4 +47,20 @@ async def change_vip(message: Message, state: FSMContext):
 
 @router.message(VipStatusState.change_vip_state, F.text)
 async def change_vip_state(message: Message, state: FSMContext):
-    pass
+    user_id = f"{message.text}"
+    vip_id.append(user_id)
+    await message.answer("Что хотите сделать?", reply_markup=kb.vip_change_kb)
+    await state.clear()
+
+
+@router.callback_query(F.data == "vip_add")
+async def vip_add(callback: CallbackQuery, state: FSMContext):
+    vip_status_time = "01-01-2024"
+    data = json_support.read_inf(admins)
+    user_id = vip_id[0]
+    c = {}
+    c[user_id] = ["vip", vip_status_time]
+    data.update(c)
+    json_support.write_inf(data, admins)
+    await callback.message.answer(f"Пользователю {user_id} был выдан вип доступ до {vip_status_time}")
+    await state.clear()
