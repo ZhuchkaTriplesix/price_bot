@@ -12,12 +12,13 @@ router = Router()
 user_data = {}
 json_data = "user_list.json"
 push_data = "users_time.json"
+admins = "admins.json"
 
 
 class NotificationOrder(StatesGroup):
     choosing_notification = State()  # used
     choosing_add_notification = State()  # used
-    response_notification_state = State()
+    response_notification_state = State()  #used
     time_add_notification_state = State()  # used
 
 
@@ -44,12 +45,14 @@ async def add_user(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await callback.message.answer("Напишите удобное для вас время")
     await state.set_state(NotificationOrder.time_add_notification_state)
+    await state.clear()
 
 
 @router.callback_query(NotificationOrder.choosing_add_notification, F.data == "Time_add_no")
-async def answer_no(callback: CallbackQuery):
+async def answer_no(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await callback.message.answer("Ну и хрен с тобой :(")
+    await state.clear()
 
 
 @router.message(NotificationOrder.time_add_notification_state)
@@ -70,6 +73,7 @@ async def edit_notification(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await callback.message.answer("Введите время:")
     await state.set_state(NotificationOrder.response_notification_state)
+    await state.clear()
 
 
 @router.message(NotificationOrder.response_notification_state)
@@ -86,13 +90,14 @@ async def time_change_notification(message: Message, state: FSMContext):
 
 
 @router.callback_query(NotificationOrder.choosing_notification, F.data == "off_notification")
-async def delete_notification(callback: CallbackQuery):
+async def delete_notification(callback: CallbackQuery, state: FSMContext):
     user_id = f"{callback.message.chat.id}"
     data = json_support.read_inf(push_data)
     del data[user_id]
     json_support.write_inf(data, push_data)
     await callback.message.delete()
     await callback.message.answer("Уведомление было отключено")
+    await state.clear()
 
 
 @router.message(F.text == '/clear')
@@ -144,6 +149,19 @@ async def answer(callback: CallbackQuery):
         print(f"{user_id},{callback.message.chat.first_name} add {case}")
     else:
         pass
+
+
+@router.message(F.text == "/vip")
+async def get_vip(message: Message):
+    admin_data = json_support.read_inf(admins)
+    user_id = f"{message.from_user.id}"
+    if user_id in admin_data.keys():
+        if admin_data[user_id] not in "Owner":
+            await message.answer("Вип меню", reply_markup=kb.admins_vip_kb)
+        else:
+            await message.answer("Вип меню", reply_markup=kb.owners_vip_kb)
+    else:
+        await message.answer("Вип меню", reply_markup=kb.users_vip_kb)
 
 
 @router.message(F.text == "/help")
