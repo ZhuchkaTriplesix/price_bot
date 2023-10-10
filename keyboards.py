@@ -5,7 +5,8 @@ main_kb = [
     [KeyboardButton(text="/cases"),
      KeyboardButton(text="/add_case")],
     [
-        KeyboardButton(text="/clear")]
+        KeyboardButton(text="/clear"),
+        KeyboardButton(text="/vip")]
 ]
 
 main = ReplyKeyboardMarkup(keyboard=main_kb, resize_keyboard=True)
@@ -68,8 +69,8 @@ owner_keyboard = [
      KeyboardButton(text="/admin_list"),
      KeyboardButton(text="/change_group")],
     [
-     KeyboardButton(text="/kill"),
-     KeyboardButton(text="/back")]
+        KeyboardButton(text="/kill"),
+        KeyboardButton(text="/back")]
 ]
 owners_kb = ReplyKeyboardMarkup(keyboard=owner_keyboard, resize_keyboard=True)
 admin_keyboard = [
@@ -77,8 +78,30 @@ admin_keyboard = [
      KeyboardButton(text="/back")]
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
+owner_vips_keyboard = [
+    [KeyboardButton(text="/check_vip"),
+     KeyboardButton(text="/change_vip")],
+    [KeyboardButton(text="/back")]
+]
+owners_vip_kb = ReplyKeyboardMarkup(keyboard=owner_vips_keyboard, resize_keyboard=True)
+admin_vips_keyboard = [
+    [KeyboardButton(text="/check_vip"),
+     KeyboardButton(text="/change_vip")],
+    [KeyboardButton(text="/back")]
+]
+admins_vip_kb = ReplyKeyboardMarkup(keyboard=admin_vips_keyboard, resize_keyboard=True)
+user_vip_keyboard = [
+    [KeyboardButton(text="/check_vip")],
+    [KeyboardButton(text="/back")]
+]
+users_vip_kb = ReplyKeyboardMarkup(keyboard=user_vip_keyboard, resize_keyboard=True)
 change_status = [
     [InlineKeyboardButton(text="Куратор", callback_data="Kurator")],
     [InlineKeyboardButton(text="Владелец", callback_data="Owner")]
 ]
 change_status_kb = InlineKeyboardMarkup(inline_keyboard=change_status)
+vip_change_inline_kb = [
+    [InlineKeyboardButton(text="Добавить вип", callback_data="vip_add")],
+    [InlineKeyboardButton(text="Удалить вип", callback_data="vip_delete")]
+]
+vip_change_kb = InlineKeyboardMarkup(inline_keyboard=vip_change_inline_kb)
