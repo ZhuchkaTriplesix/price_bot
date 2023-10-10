@@ -132,4 +132,4 @@ async def get_inventory(message: Message):
             pass
         except TypeError:
             pass
-    await message.answer(f"Стоимость ваших предметов:\n{c}\n\nОбщая стоимость инвентаря: {total}")
+    await message.answer(f"Стоимость ваших предметов:\n{c}")
