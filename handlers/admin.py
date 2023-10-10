@@ -19,6 +19,7 @@ class AdminAddStatus(StatesGroup):
     group_change = State()
     delete_admin = State()
     group_change_callback = State()
+
     group_change = State()
 
 
@@ -155,7 +156,6 @@ async def change_group_callback(callback: CallbackQuery, state: FSMContext):
     await state.clear()
 
 
-
 @router.message(AdminAddStatus.delete_admin, F.text)
 async def id_add(message: Message):
     user_id = message.text
@@ -178,38 +178,3 @@ async def change_group(message: Message, state: FSMContext):
             await state.set_state(AdminAddStatus.group_change)
     else:
         await message.answer("Че пишешь, напиши /help, если хочешь кнопки, то пиши /start.")
-
-
-@router.message(AdminAddStatus.group_change, F.text)
-async def change_status(message: Message, state: FSMContext):
-    admins_id.append(message.text)
-    await message.answer("На какую группу, вы хотите поменять?", reply_markup=kb.change_status_kb)
-    await state.set_state(AdminAddStatus.group_change_callback)
-
-
-@router.callback_query(AdminAddStatus.group_change_callback, F.data == "Kurator")
-async def change_group_callback(callback: CallbackQuery, state: FSMContext):
-    admin_id = f"{admins_id[0]}"
-    data = json_support.read_inf(admins)
-    group = callback.data
-    user_group = {admin_id: group}
-    data.update(user_group)
-    json_support.write_inf(data, admins)
-    await callback.message.delete()
-    await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
-    admins_id.clear()
-    await state.clear()
-
-
-@router.callback_query(AdminAddStatus.group_change_callback, F.data == "Owner")
-async def change_group_callback(callback: CallbackQuery, state: FSMContext):
-    admin_id = f"{admins_id[0]}"
-    data = json_support.read_inf(admins)
-    group = callback.data
-    user_group = {admin_id: group}
-    data.update(user_group)
-    json_support.write_inf(data, admins)
-    await callback.message.delete()
-    await callback.message.answer(f"Вы поменяли группу администратора {admin_id} на {group}")
-    admins_id.clear()
-    await state.clear()

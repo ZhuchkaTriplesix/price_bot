@@ -105,6 +105,3 @@ vip_change_inline_kb = [
     [InlineKeyboardButton(text="Удалить вип", callback_data="vip_delete")]
 ]
 vip_change_kb = InlineKeyboardMarkup(inline_keyboard=vip_change_inline_kb)
-
-
-
