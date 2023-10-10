@@ -81,13 +81,15 @@ admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 owner_vips_keyboard = [
     [KeyboardButton(text="/check_vip"),
      KeyboardButton(text="/change_vip")],
-    [KeyboardButton(text="/back")]
+    [KeyboardButton(text="/vip_list"),
+     KeyboardButton(text="/back")]
 ]
 owners_vip_kb = ReplyKeyboardMarkup(keyboard=owner_vips_keyboard, resize_keyboard=True)
 admin_vips_keyboard = [
     [KeyboardButton(text="/check_vip"),
      KeyboardButton(text="/change_vip")],
-    [KeyboardButton(text="/back")]
+    [KeyboardButton(text="/vip_list"),
+     KeyboardButton(text="/back")]
 ]
 admins_vip_kb = ReplyKeyboardMarkup(keyboard=admin_vips_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
