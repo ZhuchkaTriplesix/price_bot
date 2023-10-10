@@ -54,7 +54,7 @@ async def change_vip_state(message: Message, state: FSMContext):
 
 
 @router.callback_query(F.data == "vip_add")
-async def vip_add(callback: CallbackQuery, state: FSMContext):
+async def vip_add(callback: CallbackQuery):
     vip_status_time = "01-01-2024"
     data = json_support.read_inf(admins)
     user_id = vip_id[0]
@@ -62,5 +62,25 @@ async def vip_add(callback: CallbackQuery, state: FSMContext):
     c[user_id] = ["vip", vip_status_time]
     data.update(c)
     json_support.write_inf(data, admins)
-    await callback.message.answer(f"Пользователю {user_id} был выдан вип доступ до {vip_status_time}")
-    await state.clear()
+    await callback.message.delete()
+    await callback.message.answer(f"Пользователю {user_id} был выдан вип доступ до {vip_status_time}.")
+    vip_id.clear()
+
+
+@router.callback_query(F.data == "vip_delete")
+async def vip_delete(callback: CallbackQuery):
+    data = json_support.read_inf(admins)
+    user_id = vip_id[0]
+    if user_id not in data.keys():
+        await callback.message.delete()
+        await callback.message.answer(f"Пользователь {user_id}, не имеет вип доступа")
+    else:
+        if data[user_id] not in ("Owner", "Kurator", "Admin"):
+            del data[user_id]
+            json_support.write_inf(data, admins)
+            await callback.message.delete()
+            await callback.message.answer(f"Вы удалили вип доступ у пользователя {user_id}.")
+        else:
+            await callback.message.delete()
+            await callback.message.answer(f"У вас недостаточно прав для редактирования группы пользователя {user_id}.")
+    vip_id.clear()
