@@ -1,3 +1,5 @@
+import asyncio
+
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
@@ -5,10 +7,14 @@ import json_support
 import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
+from steaminventory import steaminventory as si
+from constants import non_price_items
+import steammarket as sm
 
 json_data = "user_list.json"
 push_data = "users_time.json"
 admins = "admins.json"
+inventory = "inventory.json"
 router = Router()
 vip_id = []
 
@@ -98,3 +104,32 @@ async def vip_list(message: Message):
             status = data[vip]
             x = f"{x + vip}: {status} \n"
         await message.answer(x)
+
+
+@router.message(F.text == "/get_inventory")
+async def get_inventory(message: Message):
+    # json_support.write_inf(si.get_inventory(76561198034202275), inventory)
+    x = json_support.read_inf(inventory)
+    user_item_list = []
+    c = ''
+    total = 0
+    for item in x['descriptions']:
+        if item['market_hash_name'] not in user_item_list:
+            user_item_list.append(item['market_hash_name'])
+    for item in user_item_list:
+        for items in non_price_items:
+            if item == items:
+                user_item_list.remove(item)
+    for item in user_item_list:
+        while user_item_list.count(item) > 1:
+            user_item_list.remove(item)
+    for item in user_item_list:
+        try:
+            item_price = sm.get_item(730, item, currency='RUB')
+            c = f"{c + item}: {str(item_price['lowest_price'])} \n"
+            await asyncio.sleep(2)
+        except KeyError:
+            pass
+        except TypeError:
+            pass
+    await message.answer(f"Стоимость ваших предметов:\n{c}\n\nОбщая стоимость инвентаря: {total}")
