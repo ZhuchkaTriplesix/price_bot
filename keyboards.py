@@ -100,3 +100,10 @@ change_status = [
     [InlineKeyboardButton(text="Владелец", callback_data="Owner")]
 ]
 change_status_kb = InlineKeyboardMarkup(inline_keyboard=change_status)
+vip_change_inline_kb = [
+    [InlineKeyboardButton(text="Добавить вип", callback_data="vip_add")],
+    [InlineKeyboardButton(text="Удалить вип", callback_data="vip_delete")]
+]
+vip_change_kb = InlineKeyboardMarkup(inline_keyboard=vip_change_inline_kb)
+
+
