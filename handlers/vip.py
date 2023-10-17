@@ -24,6 +24,7 @@ class VipStatusState(StatesGroup):
     change_vip_callback_state = State()
     vip_add_state = State()
     vip_delete_state = State()
+    change_steamid = State()
 
 
 @router.message(F.text == "/check_vip")
@@ -108,7 +109,7 @@ async def vip_list(message: Message):
 
 @router.message(F.text == "/get_inventory")
 async def get_inventory(message: Message):
-    # json_support.write_inf(si.get_inventory(76561198034202275), inventory)
+    json_support.write_inf(si.get_inventory(76561198034202275), inventory)
     x = json_support.read_inf(inventory)
     user_item_list = []
     c = ''
@@ -133,3 +134,22 @@ async def get_inventory(message: Message):
         except TypeError:
             pass
     await message.answer(f"Стоимость ваших предметов:\n{c}")
+
+
+@router.message(F.text == "/change_steamid")
+async def change_steamid(message: Message, state: FSMContext):
+    data = json_support.read_inf(admins)
+    user_id = f"{message.from_user.id}"
+    if user_id in data.keys():
+        await message.answer("Введите ваш айди:")
+        await state.set_state(VipStatusState.change_steamid)
+    else:
+        await message.answer("У вас нет доступа к командам Vip")
+
+
+@router.message(VipStatusState.change_steamid)
+async def change_steamid2(message: Message, state: FSMContext):
+    steamid = message.text
+    user_id = f"{message.from_user.id}"
+    data = json_support.read_inf(admins)
+    await state.clear()
