@@ -2,9 +2,6 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from handlers import client, admin, vip
 
-json_data = "user_list.json"
-push_data = "users_time.json"
-
 
 async def main():
     with open("token.txt", "r") as TOKEN:

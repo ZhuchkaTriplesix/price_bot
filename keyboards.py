@@ -1,7 +1,7 @@
 from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
                            InlineKeyboardMarkup, InlineKeyboardButton)
 
-main_kb = [
+main = [
     [KeyboardButton(text="/cases"),
      KeyboardButton(text="/add_case")],
     [
@@ -9,7 +9,7 @@ main_kb = [
         KeyboardButton(text="/vip")]
 ]
 
-main = ReplyKeyboardMarkup(keyboard=main_kb, resize_keyboard=True)
+main_kb = ReplyKeyboardMarkup(keyboard=main, resize_keyboard=True)
 cases_inline = [
     [InlineKeyboardButton(text="Оружейный кейс CS:GO", callback_data="CS:GO Weapon Case")],
     [InlineKeyboardButton(text="eSports 2013 Case", callback_data="eSports 2013 Case")],
@@ -52,16 +52,6 @@ cases_inline = [
     [InlineKeyboardButton(text="Revolution Case", callback_data="Revolution Case")]
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
-yes_no = [
-    [InlineKeyboardButton(text="Да", callback_data="Time_add_yes")],
-    [InlineKeyboardButton(text="Нет", callback_data="Time_add_no")]
-]
-yes_no_keyboard = InlineKeyboardMarkup(inline_keyboard=yes_no, one_time_keyboiard=True)
-change_off = [
-    [InlineKeyboardButton(text="Поменять время", callback_data="change_time")],
-    [InlineKeyboardButton(text="Выключить уведомление", callback_data="off_notification")]
-]
-change_off_keyboard = InlineKeyboardMarkup(inline_keyboard=change_off, one_time_keyboiard=True)
 
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
@@ -75,7 +65,7 @@ owner_keyboard = [
 owners_kb = ReplyKeyboardMarkup(keyboard=owner_keyboard, resize_keyboard=True)
 admin_keyboard = [
     [KeyboardButton(text="/admin_list"),
-     KeyboardButton(text="/back")]
+     KeyboardButton(text="/give_vip")]
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 owner_vips_keyboard = [
