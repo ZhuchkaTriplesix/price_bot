@@ -13,6 +13,7 @@ router = Router()
 class ChangeAccessState(StatesGroup):
     get_user_id_state = State()
     add_admin_id_state = State()
+    delete_admin_state = State()
 
 
 @router.message(F.text == "/admin")
@@ -66,3 +67,21 @@ async def add_admin_state(message: Message, state: FSMContext):
     models.change_access(telegram_id, "Admin")
     await message.answer("Вы выдали админ доступ пользователю")
     await state.clear()
+
+
+@router.message(F.text == "/delete_admin")
+async def delete_admin(message: Message, state: FSMContext):
+    if models.check_access(message.from_user.id) in "Owner":
+        await message.answer("Введите айди пользователя")
+        await state.set_state(ChangeAccessState.delete_admin_state)
+    else:
+        await message.answer("У вас нет доступа к этой команде")
+
+
+@router.message(ChangeAccessState.delete_admin_state, F.text)
+async def delete_admin_state(message: Message, state: FSMContext):
+    telegram_id = message.text
+    models.change_access(telegram_id, "User")
+    await message.answer("Вы удалили админ доступ у пользователя")
+    await state.clear()
+    
