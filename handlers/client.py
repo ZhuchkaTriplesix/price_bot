@@ -79,9 +79,9 @@ async def help_func(message: Message):
 @router.message(F.text == "/vip")
 async def get_vip(message: Message):
     if models.check_access(message.from_user.id) in ("Vip", "Admin", "Owner"):
-        await message.answer("vip")
+        await message.answer("Вип меню", reply_markup=kb.users_vip_kb)
     else:
-        await message.answer("Ne vip")
+        await message.answer("У вас нет доступа к это команде")
 
 
 @router.message()

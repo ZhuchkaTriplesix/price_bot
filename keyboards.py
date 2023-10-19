@@ -67,8 +67,8 @@ admin_keyboard = [
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
-    [KeyboardButton(text="/check_vip")],
-    [KeyboardButton(text="/back")]
+    [KeyboardButton(text="/support")],
+    [KeyboardButton(text="/vip_help")]
 ]
 users_vip_kb = ReplyKeyboardMarkup(keyboard=user_vip_keyboard, resize_keyboard=True)
 change_status = [
