@@ -62,7 +62,7 @@ owner_keyboard = [
 ]
 owners_kb = ReplyKeyboardMarkup(keyboard=owner_keyboard, resize_keyboard=True)
 admin_keyboard = [
-    [KeyboardButton(text="/admin_list"),
+    [KeyboardButton(text="/start"),
      KeyboardButton(text="/give_vip")]
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
