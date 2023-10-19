@@ -55,7 +55,8 @@ cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
 
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
-     KeyboardButton(text="/delete_admin")],
+     KeyboardButton(text="/delete_admin"),
+     KeyboardButton(text="/admin_list")],
     [
      KeyboardButton(text="/kill"),
      KeyboardButton(text="/give_vip")]
@@ -63,7 +64,8 @@ owner_keyboard = [
 owners_kb = ReplyKeyboardMarkup(keyboard=owner_keyboard, resize_keyboard=True)
 admin_keyboard = [
     [KeyboardButton(text="/start"),
-     KeyboardButton(text="/give_vip")]
+     KeyboardButton(text="/give_vip")],
+    [KeyboardButton(text="/admin_list")]
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
