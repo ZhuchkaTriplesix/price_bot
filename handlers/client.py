@@ -2,111 +2,14 @@ from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 import steammarket as sm
-import json_support
+from data import json_support, case_translation
 import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
-from case_translation import case_translation
+import models
 
 router = Router()
-user_data = {}
 json_data = "user_list.json"
-push_data = "users_time.json"
-admins = "admins.json"
-
-
-class NotificationOrder(StatesGroup):
-    choosing_notification = State()  # used
-    choosing_add_notification = State()  # used
-    response_notification_state = State()  # used
-    time_add_notification_state = State()  # used
-
-
-@router.message(F.text == '/start')
-async def cmd_start(message: Message):
-    await message.answer("Привет", reply_markup=kb.main)
-
-
-@router.message(F.text == "/notification")
-async def notification(message: Message, state: FSMContext):
-    user_id = f"{message.from_user.id}"
-    data = json_support.read_inf(push_data)
-    if user_id not in data.keys():
-        await message.answer("Хотите ли вы включить ежедневные уведомления?", reply_markup=kb.yes_no_keyboard)
-        await state.set_state(NotificationOrder.choosing_add_notification)
-    else:
-        await message.answer(f"Что хотите?\nВаше текущее время уведомления: {data[user_id]}",
-                             reply_markup=kb.change_off_keyboard)
-        await state.set_state(NotificationOrder.choosing_notification)
-
-
-@router.callback_query(NotificationOrder.choosing_add_notification, F.data == "Time_add_yes")
-async def add_user(callback: CallbackQuery, state: FSMContext):
-    await callback.message.delete()
-    await callback.message.answer("Напишите удобное для вас время")
-    await state.set_state(NotificationOrder.time_add_notification_state)
-    await state.clear()
-
-
-@router.callback_query(NotificationOrder.choosing_add_notification, F.data == "Time_add_no")
-async def answer_no(callback: CallbackQuery, state: FSMContext):
-    await callback.message.delete()
-    await callback.message.answer("Ну и хрен с тобой :(")
-    await state.clear()
-
-
-@router.message(NotificationOrder.time_add_notification_state)
-async def time_adding(message: Message, state: FSMContext):
-    user_id = f"{message.from_user.id}"
-    data = json_support.read_inf(push_data)
-    user_time = message.text
-    c = {user_id: user_time}
-    data.update(c)
-    json_support.write_inf(data, push_data)
-    await message.delete()
-    await message.answer(f"Вы добавили уведомление на {user_time}.")
-    await state.clear()
-
-
-@router.callback_query(NotificationOrder.choosing_notification, F.data == "change_time")
-async def edit_notification(callback: CallbackQuery, state: FSMContext):
-    await callback.message.delete()
-    await callback.message.answer("Введите время:")
-    await state.set_state(NotificationOrder.response_notification_state)
-    await state.clear()
-
-
-@router.message(NotificationOrder.response_notification_state)
-async def time_change_notification(message: Message, state: FSMContext):
-    user_id = f"{message.from_user.id}"
-    data = json_support.read_inf(push_data)
-    user_time = message.text
-    c = {user_id: user_time}
-    data.update(c)
-    json_support.write_inf(data, push_data)
-    await message.delete()
-    await message.answer(f"Вы успешно поменяли время на {user_time}.")
-    await state.clear()
-
-
-@router.callback_query(NotificationOrder.choosing_notification, F.data == "off_notification")
-async def delete_notification(callback: CallbackQuery, state: FSMContext):
-    user_id = f"{callback.message.chat.id}"
-    data = json_support.read_inf(push_data)
-    del data[user_id]
-    json_support.write_inf(data, push_data)
-    await callback.message.delete()
-    await callback.message.answer("Уведомление было отключено")
-    await state.clear()
-
-
-@router.message(F.text == '/clear')
-async def clear(message: Message):
-    data = json_support.read_inf(json_data)
-    user_id = f"{message.from_user.id}"
-    del data[user_id]
-    json_support.write_inf(data, json_data)
-    await message.answer("Локальный список ваших кейсов успешно очищен.")
 
 
 @router.message(F.text == '/cases')
@@ -117,7 +20,7 @@ async def cases(message: Message):
     if user_id in data.keys() and len(data[user_id]) > 0:
         for case in data[user_id]:
             case_price = sm.get_item(730, case, currency='RUB')
-            case = case_translation(case)
+            case = case_translation.case_translation(case)
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
         await message.answer(f"Цены на ваши кейсы:\n{x}")
     else:
@@ -133,7 +36,7 @@ async def item_list(message: Message):
 async def answer(callback: CallbackQuery):
     user_id = callback.message.chat.id
     user_id = f"{user_id}"
-    case = case_translation(callback.data)
+    case = case_translation.case_translation(callback.data)
     await callback.message.answer(f"Вы добавили {case}.")
     data = json_support.read_inf(json_data)
     cases_list = []
@@ -151,24 +54,34 @@ async def answer(callback: CallbackQuery):
         pass
 
 
-@router.message(F.text == "/vip")
-async def get_vip(message: Message):
-    admin_data = json_support.read_inf(admins)
+@router.message(F.text == '/clear')
+async def clear(message: Message):
+    data = json_support.read_inf(json_data)
     user_id = f"{message.from_user.id}"
-    if user_id in admin_data.keys():
-        if admin_data[user_id] not in "Owner":
-            await message.answer("Вип меню", reply_markup=kb.admins_vip_kb)
-        else:
-            await message.answer("Вип меню", reply_markup=kb.owners_vip_kb)
-    else:
-        await message.answer("Вип меню", reply_markup=kb.users_vip_kb)
+    del data[user_id]
+    json_support.write_inf(data, json_data)
+    await message.answer("Локальный список ваших кейсов успешно очищен.")
+
+
+@router.message(F.text == "/start")
+async def start(message: Message):
+    telegram_id = message.from_user.id
+    nickname = message.from_user.username
+    models.add_user(telegram_id, nickname)
+    await message.answer("Ну привет", reply_markup=kb.main_kb)
 
 
 @router.message(F.text == "/help")
 async def help_func(message: Message):
-    await message.answer(
-        "Commands:\n/start\n/cases - Проверить цены\n/add_case - Добавить кейс\n"
-        "/notification - Добавить/удалить уведомление\n/clear - Очистить список кейсов")
+    await message.answer("Помогите...")
+
+
+@router.message(F.text == "/vip")
+async def get_vip(message: Message):
+    if models.check_access(message.from_user.id) in ("Vip", "Admin", "Owner"):
+        await message.answer("vip")
+    else:
+        await message.answer("Ne vip")
 
 
 @router.message()
