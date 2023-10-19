@@ -76,5 +76,8 @@ def check_access(telegram_id):
             if user is not None:
                 return "Owner"
             else:
-                user = session.query(Users).filter(Users.access == "Vip").where(
-                    Users.telegram_id == telegram_id).first()
+                user = session.query(Users).filter(Users.access == "Vip").where(Users.telegram_id == telegram_id).first()
+                if user is not None:
+                    return "Vip"
+                else:
+                    return None
