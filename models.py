@@ -26,18 +26,6 @@ class Users(Base):
 Base.metadata.create_all(engine)
 
 
-# user1 = Users(nickname="ZeroZhukich", telegram_id=736491563)
-# user2 = Users(nickname="ZhuchkaTriplesix", telegram_id=6643425631, access="Owner")
-# session.add(user2)
-# session.commit()
-# users = session.query(Users).filter(Users.access == "Owner")
-# for user in users:
-#    print(user.nickname, user.access)
-# user = session.query(Users).filter(Users.telegram_id == 736491563).first()
-# user.access = "Owner"
-# session.commit()
-
-
 def add_close(user, session):
     session.add(user)
     session.commit()
@@ -75,8 +63,6 @@ def change_access(telegram_id, access):
         session.close()
 
 
-
-
 def check_access(telegram_id):
     user = session.query(Users).filter(Users.access == "Admin").where(Users.telegram_id == telegram_id).first()
     if user is not None:
@@ -90,5 +76,5 @@ def check_access(telegram_id):
             if user is not None:
                 return "Owner"
             else:
-                user = session.query(Users).filter(Users.access == "Vip").where(Users.telegram_id == telegram_id).first()
-
+                user = session.query(Users).filter(Users.access == "Vip").where(
+                    Users.telegram_id == telegram_id).first()
