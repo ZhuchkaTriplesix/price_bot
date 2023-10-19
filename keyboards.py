@@ -56,35 +56,21 @@ cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
      KeyboardButton(text="/delete_admin"),
-     KeyboardButton(text="/admin_list"),
-     KeyboardButton(text="/change_group")],
+     KeyboardButton(text="/admin_list")],
     [
-        KeyboardButton(text="/kill"),
-        KeyboardButton(text="/back")]
+     KeyboardButton(text="/kill"),
+     KeyboardButton(text="/give_vip")]
 ]
 owners_kb = ReplyKeyboardMarkup(keyboard=owner_keyboard, resize_keyboard=True)
 admin_keyboard = [
-    [KeyboardButton(text="/admin_list"),
-     KeyboardButton(text="/give_vip")]
+    [KeyboardButton(text="/start"),
+     KeyboardButton(text="/give_vip")],
+    [KeyboardButton(text="/admin_list")]
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
-owner_vips_keyboard = [
-    [KeyboardButton(text="/check_vip"),
-     KeyboardButton(text="/change_vip")],
-    [KeyboardButton(text="/vip_list"),
-     KeyboardButton(text="/back")]
-]
-owners_vip_kb = ReplyKeyboardMarkup(keyboard=owner_vips_keyboard, resize_keyboard=True)
-admin_vips_keyboard = [
-    [KeyboardButton(text="/check_vip"),
-     KeyboardButton(text="/change_vip")],
-    [KeyboardButton(text="/vip_list"),
-     KeyboardButton(text="/back")]
-]
-admins_vip_kb = ReplyKeyboardMarkup(keyboard=admin_vips_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
-    [KeyboardButton(text="/check_vip")],
-    [KeyboardButton(text="/back")]
+    [KeyboardButton(text="/support")],
+    [KeyboardButton(text="/vip_help")]
 ]
 users_vip_kb = ReplyKeyboardMarkup(keyboard=user_vip_keyboard, resize_keyboard=True)
 change_status = [

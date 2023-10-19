@@ -3,10 +3,11 @@ from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 import datetime
 from data.config import host, user, password, db_name
+import pg8000
 
 Base = declarative_base()
 
-engine = create_engine(f'postgresql://{user}:{password}@{host}/{db_name}', echo=False)
+engine = create_engine(f'postgresql+pg8000://{user}:{password}@{host}/{db_name}', echo=False)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
@@ -23,18 +24,6 @@ class Users(Base):
 
 
 Base.metadata.create_all(engine)
-
-
-# user1 = Users(nickname="ZeroZhukich", telegram_id=736491563)
-# user2 = Users(nickname="ZhuchkaTriplesix", telegram_id=6643425631, access="Owner")
-# session.add(user2)
-# session.commit()
-# users = session.query(Users).filter(Users.access == "Owner")
-# for user in users:
-#    print(user.nickname, user.access)
-# user = session.query(Users).filter(Users.telegram_id == 736491563).first()
-# user.access = "Owner"
-# session.commit()
 
 
 def add_close(user, session):
@@ -74,8 +63,6 @@ def change_access(telegram_id, access):
         session.close()
 
 
-
-
 def check_access(telegram_id):
     user = session.query(Users).filter(Users.access == "Admin").where(Users.telegram_id == telegram_id).first()
     if user is not None:
@@ -90,4 +77,7 @@ def check_access(telegram_id):
                 return "Owner"
             else:
                 user = session.query(Users).filter(Users.access == "Vip").where(Users.telegram_id == telegram_id).first()
-
+                if user is not None:
+                    return "Vip"
+                else:
+                    return None
