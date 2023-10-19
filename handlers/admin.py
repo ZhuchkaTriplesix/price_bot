@@ -65,7 +65,7 @@ async def add_admin(message: Message, state: FSMContext):
 
 @router.message(ChangeAccessState.add_admin_id_state, F.text)
 async def add_admin_state(message: Message, state: FSMContext):
-    telegram_id = message.text
+    telegram_id = int(message.text)
     models.change_access(telegram_id, "Admin")
     await message.answer("Вы выдали админ доступ пользователю")
     await state.clear()
@@ -86,3 +86,17 @@ async def delete_admin_state(message: Message, state: FSMContext):
     models.change_access(telegram_id, "User")
     await message.answer("Вы удалили админ доступ у пользователя")
     await state.clear()
+
+
+@router.message(F.text == "/admin_list")
+async def admin_list(message: Message):
+    owners = models.session.query(models.Users).where(models.Users.access == "Owner")
+    admins = models.session.query(models.Users).where(models.Users.access == "Admin")
+    bot_message = 'Список Админов:\n'
+    for admin in owners:
+        x = f"@{admin.nickname}: {admin.telegram_id} Owner\n"
+        bot_message += x
+    for admin in admins:
+        x = f"@{admin.nickname}: {admin.telegram_id} Admin\n"
+        bot_message += x
+    await message.answer(bot_message)
