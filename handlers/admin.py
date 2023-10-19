@@ -18,8 +18,10 @@ class ChangeAccessState(StatesGroup):
 
 @router.message(F.text == "/admin")
 async def admin_kb(message: Message):
-    if models.check_access(message.from_user.id) in ("Owner", "Admin"):
+    if models.check_access(message.from_user.id) == "Admin":
         await message.answer("Админ меню", reply_markup=kb.admins_kb)
+    elif models.check_access(message.from_user.id) == "Owner":
+        await message.answer("Админ меню", reply_markup=kb.owners_kb)
 
 
 @router.message(F.text == "/give_vip")
@@ -84,4 +86,3 @@ async def delete_admin_state(message: Message, state: FSMContext):
     models.change_access(telegram_id, "User")
     await message.answer("Вы удалили админ доступ у пользователя")
     await state.clear()
-    
