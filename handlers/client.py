@@ -1,4 +1,3 @@
-import asyncio
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
