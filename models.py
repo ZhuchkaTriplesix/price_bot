@@ -87,6 +87,12 @@ def check_access(telegram_id):
 
 def change_steam_id(telegram_id, steam_id):
     session = Session()
+    try:
+        steam_id = int(steam_id)
+    except TypeError:
+        return "Вы ввели неверный стим айди"
+    except ValueError:
+        return "Вы ввели неверный стим айди"
     user = session.query(Users).where(Users.telegram_id == telegram_id).first()
     user.steam_id = steam_id
     session.commit()
