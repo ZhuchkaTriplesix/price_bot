@@ -20,6 +20,7 @@ class Users(Base):
     nickname = Column(String)
     telegram_id = Column(BigInteger, index=True)
     access = Column(String, default="User")
+    steam_id = Column(BigInteger, index=True, default=None)
     created = Column(DateTime, default=datetime.datetime.utcnow)
 
 
@@ -76,8 +77,17 @@ def check_access(telegram_id):
             if user is not None:
                 return "Owner"
             else:
-                user = session.query(Users).filter(Users.access == "Vip").where(Users.telegram_id == telegram_id).first()
+                user = session.query(Users).filter(Users.access == "Vip").where(
+                    Users.telegram_id == telegram_id).first()
                 if user is not None:
                     return "Vip"
                 else:
                     return None
+
+
+def change_steam_id(telegram_id, steam_id):
+    session = Session()
+    user = session.query(Users).where(Users.telegram_id == telegram_id).first()
+    user.steam_id = steam_id
+    session.commit()
+    session.close()
