@@ -69,17 +69,10 @@ admin_keyboard = [
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
-    [KeyboardButton(text="/support")],
-    [KeyboardButton(text="/vip_help")]
+    [KeyboardButton(text="/steamid"),
+     KeyboardButton(text="/my_steamid")],
+    [KeyboardButton(text="/support"),
+     KeyboardButton(text="/vip_help")]
 ]
 users_vip_kb = ReplyKeyboardMarkup(keyboard=user_vip_keyboard, resize_keyboard=True)
-change_status = [
-    [InlineKeyboardButton(text="Куратор", callback_data="Kurator")],
-    [InlineKeyboardButton(text="Владелец", callback_data="Owner")]
-]
-change_status_kb = InlineKeyboardMarkup(inline_keyboard=change_status)
-vip_change_inline_kb = [
-    [InlineKeyboardButton(text="Добавить вип", callback_data="vip_add")],
-    [InlineKeyboardButton(text="Удалить вип", callback_data="vip_delete")]
-]
-vip_change_kb = InlineKeyboardMarkup(inline_keyboard=vip_change_inline_kb)
+
