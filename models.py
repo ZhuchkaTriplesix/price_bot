@@ -1,9 +1,11 @@
+import time
 from sqlalchemy import Column, Integer, String, DateTime, BigInteger, Float
 from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 import datetime
-from data.config import host, user, password, db_name
+from data.config import host, user, password, db_name, cases
 import pg8000
+import steammarket as sm
 
 Base = declarative_base()
 
@@ -16,8 +18,7 @@ conn = engine.connect()
 
 class CasesPrice(Base):
     __tablename__ = "prices"
-    id = Column(Integer, primary_key=True)
-    time_check = Column(DateTime, default=datetime.datetime.utcnow)
+    time_check = Column(DateTime, default=datetime.datetime.utcnow, primary_key=True)
     Clutch_Case = Column(Float)
     Danger_Zone_Case = Column(Float)
     CS20_Case = Column(Float)
@@ -118,3 +119,19 @@ def add_close_case(cases, session):
     session.add(cases)
     session.commit()
     session.close()
+
+
+def get_prices(cases):
+    session = Session()
+    const_cases = cases
+    prices = []
+    for case in const_cases:
+        price = sm.get_item(730, case, currency='RUB')
+        price = price['lowest_price']
+        price = price[:-5]
+        price = price.replace(",", ".")
+        prices.append(float(price))
+    output = CasesPrice(Clutch_Case=prices[0], Danger_Zone_Case=prices[1], CS20_Case=prices[2])
+    add_close_case(output, session)
+
+

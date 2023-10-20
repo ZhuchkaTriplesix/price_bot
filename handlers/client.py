@@ -1,3 +1,4 @@
+import asyncio
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
@@ -7,6 +8,7 @@ import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 import models
+from data.config import cases as constcases
 
 router = Router()
 json_data = "user_list.json"
@@ -23,6 +25,7 @@ async def cases(message: Message):
             case = case_translation.case_translation(case)
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
         await message.answer(f"Цены на ваши кейсы:\n{x}")
+        models.get_prices(constcases)
     else:
         await message.answer("Вы не добавили кейсы.")
 

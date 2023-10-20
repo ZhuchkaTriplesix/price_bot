@@ -6,7 +6,6 @@ from data import json_support
 import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
-import steammarket as sm
 import models
 
 router = Router()
