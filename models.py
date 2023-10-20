@@ -91,3 +91,15 @@ def change_steam_id(telegram_id, steam_id):
     user.steam_id = steam_id
     session.commit()
     session.close()
+
+
+def get_steamid(telegram_id):
+    session = Session()
+    user = session.query(Users).where(Users.telegram_id == telegram_id).first()
+    if user.steam_id is None:
+        session.close()
+        return None
+    else:
+        user_message = f"{user.steam_id}"
+        session.close()
+        return user_message
