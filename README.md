@@ -5,7 +5,7 @@
 
 - 🔭 I’m currently working on [price_bot](https://github.com/JuntexZhuk/price_bot/tree/main)
 
-- 🌱 I’m currently learning **SQLAlchemy, AIOGram**
+- 🌱 I’m currently learning **SQLAlchemy, AIOGram, PyMongo, MongoDB**
 
 - 👯 I’m looking to collaborate on [Xenatanitz](https://github.com/JuntexZhuk/study/tree/master)
 
