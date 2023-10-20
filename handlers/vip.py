@@ -1,9 +1,6 @@
-import asyncio
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery
-from data import json_support
-import keyboards as kb
+from aiogram.types import Message
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 import models
