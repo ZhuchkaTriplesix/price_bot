@@ -30,7 +30,7 @@ async def vip_help(message: Message):
         "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/steam_id - поменять стим айди (по умолчанию его нет)")
 
 
-@router.message(F.text == "/steam_id")
+@router.message(F.text == "/steamid")
 async def change_steam_id(message: Message, state: FSMContext):
     if models.check_access(message.from_user.id) in ("Vip", "Admin", "Owner"):
         await message.answer("Введите свой стим айди")
@@ -53,3 +53,11 @@ async def change_steam_id_state(message: Message, state: FSMContext):
     except ValueError:
         await message.answer("Вы ввели неверный стим айди")
         await state.clear()
+
+@router.message(F.text == "/my_steamid")
+async def get_steamid(message: Message):
+    if models.get_steamid(message.from_user.id) is None:
+        await message.answer("Вашего стим айди нет в базе, для добавления воспользуйтесь командой: /steamid")
+    else:
+        steam_id = models.get_steamid(message.from_user.id)
+        await message.answer(f"Ваш стим айди: {steam_id}")
