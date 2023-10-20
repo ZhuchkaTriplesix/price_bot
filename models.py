@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, BigInteger
+from sqlalchemy import Column, Integer, String, DateTime, BigInteger, Float
 from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 import datetime
@@ -12,6 +12,15 @@ engine = create_engine(f'postgresql+pg8000://{user}:{password}@{host}/{db_name}'
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
 conn = engine.connect()
+
+
+class CasesPrice(Base):
+    __tablename__ = "prices"
+    id = Column(Integer, primary_key=True)
+    time_check = Column(DateTime, default=datetime.datetime.utcnow)
+    Clutch_Case = Column(Float)
+    Danger_Zone_Case = Column(Float)
+    CS20_Case = Column(Float)
 
 
 class Users(Base):
@@ -103,3 +112,9 @@ def get_steamid(telegram_id):
         user_message = f"{user.steam_id}"
         session.close()
         return user_message
+
+
+def add_close_case(cases, session):
+    session.add(cases)
+    session.commit()
+    session.close()
