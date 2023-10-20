@@ -1,7 +1,7 @@
-<h1 align="center">Hi 👋, I'm JuntexZhuk</h1>
+<h1 align="center">Hi 👋, I'm ZhuchkaTriplesix</h1>
 <h3 align="center">Backend python developer</h3>
 
-<p align="left"> <img src="https://komarev.com/ghpvc/?username=juntexzhuk&label=Profile%20views&color=0e75b6&style=flat" alt="JuntexZhuk" /> </p>
+<p align="left"> <img src="https://komarev.com/ghpvc/?username=juntexzhuk&label=Profile%20views&color=0e75b6&style=flat" alt="ZhuchkaTriplesix" /> </p>
 
 - 🔭 I’m currently working on [price_bot](https://github.com/JuntexZhuk/price_bot/tree/main)
 
