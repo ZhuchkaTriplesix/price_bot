@@ -26,7 +26,8 @@ async def support(message: Message):
 
 @router.message(F.text == "/vip_help")
 async def vip_help(message: Message):
-    await message.answer("Команды для Vip пользователей:\n/support - Персональная помощь с ботом")
+    await message.answer(
+        "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/steam_id - поменять стим айди (по умолчанию его нет)")
 
 
 @router.message(F.text == "/steam_id")
