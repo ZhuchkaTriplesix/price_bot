@@ -51,6 +51,10 @@ cases_inline = [
     [InlineKeyboardButton(text="Revolution Case", callback_data="Revolution Case")]
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
+inventory_inline = [
+    [InlineKeyboardButton(text="Стоимость", callback_data="items_price")]
+]
+inventory_kb = InlineKeyboardMarkup(inline_keyboard=inventory_inline)
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
      KeyboardButton(text="/delete_admin"),
