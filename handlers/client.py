@@ -24,7 +24,6 @@ async def cases(message: Message):
             case = case_translation.case_translation(case)
             x = f"{x + case}: {str(case_price['lowest_price'])} \n"
         await message.answer(f"Цены на ваши кейсы:\n{x}")
-        models.get_prices(constcases)
     else:
         await message.answer("Вы не добавили кейсы.")
 
@@ -68,8 +67,8 @@ async def clear(message: Message):
 @router.message(F.text == "/start")
 async def start(message: Message):
     telegram_id = message.from_user.id
-    nickname = message.from_user.username
-    models.add_user(telegram_id, nickname)
+    username = message.from_user.username
+    models.add_user(telegram_id, username)
     await message.answer("Ну привет", reply_markup=kb.main_kb)
 
 
