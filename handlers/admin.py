@@ -1,6 +1,6 @@
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message
 import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
