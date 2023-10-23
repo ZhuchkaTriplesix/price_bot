@@ -86,13 +86,13 @@ async def delete_admin_state(message: Message, state: FSMContext):
 
 @router.message(F.text == "/admin_list")
 async def admin_list(message: Message):
-    owners = models.session.query(models.Users).where(models.Users.user_group == 3)
-    admins = models.session.query(models.Users).where(models.Users.user_group == 2)
-    bot_message = 'Список Админов:\n'
+    owners = models.session.query(models.Users).where(models.Users.group_id == 3)
+    admins = models.session.query(models.Users).where(models.Users.group_id == 2)
+    bot_message = 'Список Админов:\n\n'
     for admin in owners:
-        x = f"@{admin.nickname}: {admin.telegram_id} Owner\n"
+        x = f"@{admin.username}: {admin.telegram_id} Owner\n"
         bot_message += x
     for admin in admins:
-        x = f"@{admin.nickname}: {admin.telegram_id} Admin\n"
+        x = f"@{admin.username}: {admin.telegram_id} Admin\n"
         bot_message += x
     await message.answer(bot_message)
