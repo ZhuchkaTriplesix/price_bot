@@ -1,4 +1,3 @@
-import time
 from sqlalchemy import Column, Integer, String, DateTime, BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
