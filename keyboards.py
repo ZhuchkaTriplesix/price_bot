@@ -71,7 +71,7 @@ admin_keyboard = [
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
-    [KeyboardButton(text="/add_items"),
+    [KeyboardButton(text="/add_item"),
      KeyboardButton(text="/my_items")],
     [KeyboardButton(text="/support"),
      KeyboardButton(text="/vip_help")]

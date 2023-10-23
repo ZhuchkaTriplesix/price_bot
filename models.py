@@ -100,9 +100,13 @@ def add_item(telegram_id, hash_name, item_count):
     session = Session()
     user_id = get_id(telegram_id)
     item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
-    if item is None:
+    if item.hash_name is None:
         item = Items(user_id=user_id, hash_name=hash_name, item_count=item_count)
         session.add(item)
+        session.commit()
+        session.close()
+    else:
+        item.item_count = item_count
         session.commit()
         session.close()
 
