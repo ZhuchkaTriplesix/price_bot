@@ -18,24 +18,25 @@ class ChangeAccessState(StatesGroup):
 
 @router.message(F.text == "/admin")
 async def admin_kb(message: Message):
-    if models.check_access(message.from_user.id) == "Admin":
-        await message.answer("Админ меню", reply_markup=kb.admins_kb)
-    elif models.check_access(message.from_user.id) == "Owner":
+    if models.check_admin(message.from_user.id) is True:
         await message.answer("Админ меню", reply_markup=kb.owners_kb)
 
 
 @router.message(F.text == "/give_vip")
 async def change_access(message: Message, state: FSMContext):
     telegram_id = message.from_user.id
-    if models.check_access(telegram_id) in ("Admin", "Owner"):
+    if models.check_admin(telegram_id) is True:
         await message.answer("Введите айди пользователя")
         await state.set_state(ChangeAccessState.get_user_id_state)
+    else:
+        await message.answer("У вас нет доступа к этой команде.")
 
 
 @router.message(ChangeAccessState.get_user_id_state, F.text)
 async def change_user_access(message: Message, state: FSMContext):
     telegram_id = message.text
-    models.change_access(telegram_id, "Vip")
+    telegram_id = int(telegram_id)
+    models.change_access(telegram_id, 1)
     await message.answer("Вы успешно поменяли группу пользователя, на Vip")
     await state.clear()
 
@@ -47,7 +48,7 @@ async def check_access(message: Message):
 
 @router.message(F.text == "/kill")
 async def kill_process(message: Message):
-    if models.check_access(message.from_user.id) in "Owner":
+    if models.check_admin(message.from_user.id) is True:
         await message.answer("Отключаюсь(..")
         sys.exit()
     else:
@@ -56,7 +57,7 @@ async def kill_process(message: Message):
 
 @router.message(F.text == "/add_admin")
 async def add_admin(message: Message, state: FSMContext):
-    if models.check_access(message.from_user.id) in "Owner":
+    if models.check_admin(message.from_user.id) is True:
         await message.answer("Введите айди пользователя")
         await state.set_state(ChangeAccessState.add_admin_id_state)
     else:
@@ -73,7 +74,7 @@ async def add_admin_state(message: Message, state: FSMContext):
 
 @router.message(F.text == "/delete_admin")
 async def delete_admin(message: Message, state: FSMContext):
-    if models.check_access(message.from_user.id) in "Owner":
+    if models.check_admin(message.from_user.id) is True:
         await message.answer("Введите айди пользователя")
         await state.set_state(ChangeAccessState.delete_admin_state)
     else:
@@ -90,8 +91,8 @@ async def delete_admin_state(message: Message, state: FSMContext):
 
 @router.message(F.text == "/admin_list")
 async def admin_list(message: Message):
-    owners = models.session.query(models.Users).where(models.Users.access == "Owner")
-    admins = models.session.query(models.Users).where(models.Users.access == "Admin")
+    owners = models.session.query(models.Users).where(models.Users.user_group == 3)
+    admins = models.session.query(models.Users).where(models.Users.user_group == 2)
     bot_message = 'Список Админов:\n'
     for admin in owners:
         x = f"@{admin.nickname}: {admin.telegram_id} Owner\n"
