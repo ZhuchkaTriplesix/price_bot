@@ -7,6 +7,7 @@ import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 import models
+from data.config import cases as constcases
 
 router = Router()
 json_data = "user_list.json"
@@ -66,8 +67,8 @@ async def clear(message: Message):
 @router.message(F.text == "/start")
 async def start(message: Message):
     telegram_id = message.from_user.id
-    nickname = message.from_user.username
-    models.add_user(telegram_id, nickname)
+    username = message.from_user.username
+    models.add_user(telegram_id, username)
     await message.answer("Ну привет", reply_markup=kb.main_kb)
 
 
@@ -78,7 +79,7 @@ async def help_func(message: Message):
 
 @router.message(F.text == "/vip")
 async def get_vip(message: Message):
-    if models.check_access(message.from_user.id) in ("Vip", "Admin", "Owner"):
+    if models.check_vip(message.from_user.id) is True:
         await message.answer("Вип меню", reply_markup=kb.users_vip_kb)
     else:
         await message.answer("У вас нет доступа к это команде")

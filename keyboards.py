@@ -8,7 +8,6 @@ main = [
         KeyboardButton(text="/clear"),
         KeyboardButton(text="/vip")]
 ]
-
 main_kb = ReplyKeyboardMarkup(keyboard=main, resize_keyboard=True)
 cases_inline = [
     [InlineKeyboardButton(text="Оружейный кейс CS:GO", callback_data="CS:GO Weapon Case")],
@@ -52,7 +51,10 @@ cases_inline = [
     [InlineKeyboardButton(text="Revolution Case", callback_data="Revolution Case")]
 ]
 cases = InlineKeyboardMarkup(inline_keyboard=cases_inline)
-
+inventory_inline = [
+    [InlineKeyboardButton(text="Стоимость", callback_data="items_price")]
+]
+inventory_kb = InlineKeyboardMarkup(inline_keyboard=inventory_inline)
 owner_keyboard = [
     [KeyboardButton(text="/add_admin"),
      KeyboardButton(text="/delete_admin"),
@@ -75,4 +77,3 @@ user_vip_keyboard = [
      KeyboardButton(text="/vip_help")]
 ]
 users_vip_kb = ReplyKeyboardMarkup(keyboard=user_vip_keyboard, resize_keyboard=True)
-
