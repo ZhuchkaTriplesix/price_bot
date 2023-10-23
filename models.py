@@ -1,11 +1,10 @@
 import time
-from sqlalchemy import Column, Integer, String, DateTime, BigInteger, Float, ForeignKey
-from sqlalchemy import create_engine, update
+from sqlalchemy import Column, Integer, String, DateTime, BigInteger
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 import datetime
-from data.config import host, user, password, db_name, cases
+from data.config import host, user, password, db_name
 import pg8000
-import steammarket as sm
 
 Base = declarative_base()
 
