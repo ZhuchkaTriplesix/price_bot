@@ -41,11 +41,6 @@ async def change_user_access(message: Message, state: FSMContext):
     await state.clear()
 
 
-@router.message(F.text == "/check_access")
-async def check_access(message: Message):
-    await message.answer(models.check_access(message.from_user.id))
-
-
 @router.message(F.text == "/kill")
 async def kill_process(message: Message):
     if models.check_admin(message.from_user.id) is True:
