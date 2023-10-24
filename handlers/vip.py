@@ -28,7 +28,7 @@ async def support(message: Message):
 async def vip_help(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/vip_help")
     await message.answer(
-        "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/add_item - добавить предметы\n/my_items - ваши предметы")
+        "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/add_item - Добавить предметы\n/my_items - Ваши предметы")
 
 
 @router.message(F.text == "/my_items")
