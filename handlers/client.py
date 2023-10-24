@@ -17,6 +17,7 @@ json_data = "user_list.json"
 async def cases(message: Message):
     x = ''
     user_id = f"{message.from_user.id}"
+    models.Users.add_user(message.from_user.id, message.from_user.username)
     models.LogBase.add(message.from_user.id, message.from_user.username, "/cases")
     data = json_support.read_inf(json_data)
     if user_id in data.keys() and len(data[user_id]) > 0:
@@ -70,9 +71,7 @@ async def clear(message: Message):
 @router.message(F.text == "/start")
 async def start(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/start")
-    telegram_id = message.from_user.id
-    username = message.from_user.username
-    models.Users.add_user(telegram_id, username)
+    models.Users.add_user(message.from_user.id, message.from_user.username)
     await message.answer("Ну привет", reply_markup=kb.main_kb)
 
 
