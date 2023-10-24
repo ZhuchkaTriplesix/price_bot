@@ -17,6 +17,7 @@ class AddInventory(StatesGroup):
 
 @router.message(F.text == "/support")
 async def support(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/support")
     if models.Users.check_vip(message.from_user.id) is True:
         await message.answer("Напишите - @ZhuchkaTriplesix")
     else:
@@ -25,12 +26,14 @@ async def support(message: Message):
 
 @router.message(F.text == "/vip_help")
 async def vip_help(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/vip_help")
     await message.answer(
         "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/steam_id - Поменять стим айди (по умолчанию его нет)\n/my_steamid - Ваш стим айди")
 
 
 @router.message(F.text == "/my_items")
 async def my_cases(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/my_items")
     if models.Users.check_vip(message.from_user.id) is True:
         my_items = models.Items.user_items(message.from_user.id)
         answer = 'Ваши предметы:\n\n'
@@ -60,6 +63,7 @@ async def items_price(callback: CallbackQuery):
 
 @router.message(F.text == "/add_item")
 async def add_item(message: Message, state: FSMContext):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/add_item")
     await message.answer(
         "Напишите название предмета на англ и через . кол-во\nПримеры написания:\nClutch Case.100\nFracture Case.10")
     await state.set_state(AddInventory.add_item_state)

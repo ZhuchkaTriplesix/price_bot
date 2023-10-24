@@ -112,4 +112,19 @@ class Items(Base):
         return user_item
 
 
+class LogBase(Base):
+    __tablename__ = "functions_log"
+    id = Column(Integer, primary_key=True)
+    telegram_id = Column(BigInteger, index=True)
+    username = Column(String(length=32))
+    function_name = Column(String(length=12))
+
+    def add(telegram_id, username, function_name):
+        session = Session()
+        func = LogBase(telegram_id=telegram_id, username=username, function_name=function_name)
+        session.add(func)
+        session.commit()
+        session.close()
+
+
 Base.metadata.create_all(engine)

@@ -17,6 +17,7 @@ json_data = "user_list.json"
 async def cases(message: Message):
     x = ''
     user_id = f"{message.from_user.id}"
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/cases")
     data = json_support.read_inf(json_data)
     if user_id in data.keys() and len(data[user_id]) > 0:
         for case in data[user_id]:
@@ -30,6 +31,7 @@ async def cases(message: Message):
 
 @router.message(F.text == "/add_case")
 async def item_list(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/add_case")
     await message.answer("Какой кейс вы хотите добавить?:", reply_markup=kb.cases)
 
 
@@ -57,6 +59,7 @@ async def answer(callback: CallbackQuery):
 
 @router.message(F.text == '/clear')
 async def clear(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/clear")
     data = json_support.read_inf(json_data)
     user_id = f"{message.from_user.id}"
     del data[user_id]
@@ -66,6 +69,7 @@ async def clear(message: Message):
 
 @router.message(F.text == "/start")
 async def start(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/start")
     telegram_id = message.from_user.id
     username = message.from_user.username
     models.Users.add_user(telegram_id, username)
@@ -74,11 +78,13 @@ async def start(message: Message):
 
 @router.message(F.text == "/help")
 async def help_func(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/help")
     await message.answer("Помогите...")
 
 
 @router.message(F.text == "/vip")
 async def get_vip(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/vip")
     if models.Users.check_vip(message.from_user.id) is True:
         await message.answer("Вип меню", reply_markup=kb.users_vip_kb)
     else:
