@@ -23,7 +23,7 @@ class Users(Base):
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    def add_user(telegram_id, username):
+    def add_user(telegram_id: int, username: str):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -38,7 +38,7 @@ class Users(Base):
         session.close()
         print("Successful adding")
 
-    def add_admin(telegram_id, username):
+    def add_admin(telegram_id: int, username: str):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -47,7 +47,7 @@ class Users(Base):
             user = Users(username=username, telegram_id=telegram_id, group_id=2)
             Users.add_close(user, session)
 
-    def change_access(telegram_id, group_id):
+    def change_access(telegram_id: int, group_id: int):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -56,7 +56,7 @@ class Users(Base):
             session.commit()
             session.close()
 
-    def check_vip(telegram_id):
+    def check_vip(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_group = user.group_id
         if user_group >= 1:
@@ -64,7 +64,7 @@ class Users(Base):
         else:
             return False
 
-    def check_admin(telegram_id):
+    def check_admin(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_group = user.group_id
         if user_group >= 2:
@@ -72,7 +72,7 @@ class Users(Base):
         else:
             return False
 
-    def get_id(telegram_id):
+    def get_id(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_id = user.id
         return user_id
@@ -85,7 +85,7 @@ class Items(Base):
     hash_name = Column(String(length=30))
     item_count = Column(Integer)
 
-    def add_item(telegram_id, hash_name, item_count):
+    def add_item(telegram_id: int, hash_name: str, item_count: int):
         session = Session()
         user_id = Users.get_id(telegram_id)
         item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
@@ -99,7 +99,7 @@ class Items(Base):
             session.commit()
             session.close()
 
-    def user_items(telegram_id):
+    def user_items(telegram_id: int):
         session = Session()
         user_id = Users.get_id(telegram_id)
         items = session.query(Items).where(Items.user_id == user_id).all()
@@ -119,7 +119,7 @@ class LogBase(Base):
     username = Column(String(length=32))
     function_name = Column(String(length=12))
 
-    def add(telegram_id, username, function_name):
+    def add(telegram_id: int, username: str, function_name: str) -> object:
         session = Session()
         func = LogBase(telegram_id=telegram_id, username=username, function_name=function_name)
         session.add(func)
