@@ -31,6 +31,7 @@ async def vip_help(message: Message):
         "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/add_item - Добавить предметы\n/my_items - Ваши предметы")
 
 
+# noinspection PyTypeChecker
 @router.message(F.text == "/my_items")
 async def my_cases(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/my_items")
@@ -44,6 +45,7 @@ async def my_cases(message: Message):
         await message.answer("У вас нет доступа к этой команде")
 
 
+# noinspection PyTypeChecker
 @router.callback_query(F.data == "items_price")
 async def items_price(callback: CallbackQuery):
     items = models.Items.user_items(callback.from_user.id)
