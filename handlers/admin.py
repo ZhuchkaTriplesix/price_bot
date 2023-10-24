@@ -27,7 +27,7 @@ async def admin_kb(message: Message):
 async def change_access(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/give_vip")
     telegram_id = message.from_user.id
-    if models.check_admin(telegram_id) is True:
+    if models.Users.check_admin(telegram_id) is True:
         await message.answer("Введите айди пользователя")
         await state.set_state(ChangeAccessState.get_user_id_state)
     else:

@@ -23,7 +23,7 @@ class Users(Base):
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    def add_user(telegram_id: int, username: str):
+    def add_user(telegram_id: int, username: str) -> object:
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -38,7 +38,7 @@ class Users(Base):
         session.close()
         print("Successful adding")
 
-    def add_admin(telegram_id: int, username: str):
+    def add_admin(telegram_id: int, username: str) -> object:
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -47,7 +47,7 @@ class Users(Base):
             user = Users(username=username, telegram_id=telegram_id, group_id=2)
             Users.add_close(user, session)
 
-    def change_access(telegram_id: int, group_id: int):
+    def change_access(telegram_id: int, group_id: int) -> object:
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -85,7 +85,7 @@ class Items(Base):
     hash_name = Column(String(length=30))
     item_count = Column(Integer)
 
-    def add_item(telegram_id: int, hash_name: str, item_count: int):
+    def add_item(telegram_id: int, hash_name: str, item_count: int) -> object:
         session = Session()
         user_id = Users.get_id(telegram_id)
         item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
@@ -99,7 +99,7 @@ class Items(Base):
             session.commit()
             session.close()
 
-    def user_items(telegram_id: int):
+    def user_items(telegram_id: int) -> object:
         session = Session()
         user_id = Users.get_id(telegram_id)
         items = session.query(Items).where(Items.user_id == user_id).all()
