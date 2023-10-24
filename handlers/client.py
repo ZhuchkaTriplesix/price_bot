@@ -1,13 +1,10 @@
 from aiogram import F
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 import steammarket as sm
 from data import json_support, case_translation
 import keyboards as kb
 from aiogram import Router
-from aiogram.fsm.context import FSMContext
 import models
-from data.config import cases as constcases
 
 router = Router()
 json_data = "user_list.json"
