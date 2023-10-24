@@ -1,13 +1,10 @@
 from aiogram import F
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 import steammarket as sm
 from data import json_support, case_translation
 import keyboards as kb
 from aiogram import Router
-from aiogram.fsm.context import FSMContext
 import models
-from data.config import cases as constcases
 
 router = Router()
 json_data = "user_list.json"
@@ -17,6 +14,8 @@ json_data = "user_list.json"
 async def cases(message: Message):
     x = ''
     user_id = f"{message.from_user.id}"
+    models.Users.add_user(message.from_user.id, message.from_user.username)
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/cases")
     data = json_support.read_inf(json_data)
     if user_id in data.keys() and len(data[user_id]) > 0:
         for case in data[user_id]:
@@ -30,6 +29,7 @@ async def cases(message: Message):
 
 @router.message(F.text == "/add_case")
 async def item_list(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/add_case")
     await message.answer("Какой кейс вы хотите добавить?:", reply_markup=kb.cases)
 
 
@@ -57,6 +57,7 @@ async def answer(callback: CallbackQuery):
 
 @router.message(F.text == '/clear')
 async def clear(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/clear")
     data = json_support.read_inf(json_data)
     user_id = f"{message.from_user.id}"
     del data[user_id]
@@ -66,20 +67,21 @@ async def clear(message: Message):
 
 @router.message(F.text == "/start")
 async def start(message: Message):
-    telegram_id = message.from_user.id
-    username = message.from_user.username
-    models.add_user(telegram_id, username)
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/start")
+    models.Users.add_user(message.from_user.id, message.from_user.username)
     await message.answer("Ну привет", reply_markup=kb.main_kb)
 
 
 @router.message(F.text == "/help")
 async def help_func(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/help")
     await message.answer("Помогите...")
 
 
 @router.message(F.text == "/vip")
 async def get_vip(message: Message):
-    if models.check_vip(message.from_user.id) is True:
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/vip")
+    if models.Users.check_vip(message.from_user.id) is True:
         await message.answer("Вип меню", reply_markup=kb.users_vip_kb)
     else:
         await message.answer("У вас нет доступа к это команде")

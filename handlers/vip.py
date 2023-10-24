@@ -17,7 +17,8 @@ class AddInventory(StatesGroup):
 
 @router.message(F.text == "/support")
 async def support(message: Message):
-    if models.check_vip(message.from_user.id) is True:
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/support")
+    if models.Users.check_vip(message.from_user.id) is True:
         await message.answer("Напишите - @ZhuchkaTriplesix")
     else:
         await message.answer("У вас нет доступа к этой команде")
@@ -25,14 +26,17 @@ async def support(message: Message):
 
 @router.message(F.text == "/vip_help")
 async def vip_help(message: Message):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/vip_help")
     await message.answer(
-        "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/steam_id - Поменять стим айди (по умолчанию его нет)\n/my_steamid - Ваш стим айди")
+        "Команды для Vip пользователей:\n/support - Персональная помощь с ботом\n/add_item - Добавить предметы\n/my_items - Ваши предметы")
 
 
+# noinspection PyTypeChecker
 @router.message(F.text == "/my_items")
 async def my_cases(message: Message):
-    if models.check_vip(message.from_user.id) is True:
-        my_items = models.user_items(message.from_user.id)
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/my_items")
+    if models.Users.check_vip(message.from_user.id) is True:
+        my_items = models.Items.user_items(message.from_user.id)
         answer = 'Ваши предметы:\n\n'
         for key in my_items:
             answer = answer + f"{key}: {my_items[key]}\n"
@@ -41,9 +45,10 @@ async def my_cases(message: Message):
         await message.answer("У вас нет доступа к этой команде")
 
 
+# noinspection PyTypeChecker
 @router.callback_query(F.data == "items_price")
 async def items_price(callback: CallbackQuery):
-    items = models.user_items(callback.from_user.id)
+    items = models.Items.user_items(callback.from_user.id)
     answer = 'Стоимость вашего инвентаря:\n\n'
     total = 0
     for key in items:
@@ -60,6 +65,7 @@ async def items_price(callback: CallbackQuery):
 
 @router.message(F.text == "/add_item")
 async def add_item(message: Message, state: FSMContext):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/add_item")
     await message.answer(
         "Напишите название предмета на англ и через . кол-во\nПримеры написания:\nClutch Case.100\nFracture Case.10")
     await state.set_state(AddInventory.add_item_state)
@@ -72,6 +78,6 @@ async def add_item_bd(message: Message, state: FSMContext):
     hash_name = mes[0]
     item_count = int(mes[1])
     telegram_id = message.from_user.id
-    models.add_item(telegram_id, hash_name, item_count)
+    models.Items.add_item(telegram_id, hash_name, item_count)
     await message.answer(f"Вы добавили {hash_name}")
     await state.clear()
