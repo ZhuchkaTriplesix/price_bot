@@ -14,6 +14,7 @@ session = scoped_session(Session)
 conn = engine.connect()
 
 
+# noinspection PyTypeChecker,PyMethodParameters,PyShadowingNames
 class Users(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
@@ -23,7 +24,7 @@ class Users(Base):
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    def add_user(telegram_id: int, username: str) -> object:
+    def add_user(telegram_id: int, username: str):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -38,7 +39,7 @@ class Users(Base):
         session.close()
         print("Successful adding")
 
-    def add_admin(telegram_id: int, username: str) -> object:
+    def add_admin(telegram_id: int, username: str):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -47,7 +48,7 @@ class Users(Base):
             user = Users(username=username, telegram_id=telegram_id, group_id=2)
             Users.add_close(user, session)
 
-    def change_access(telegram_id: int, group_id: int) -> object:
+    def change_access(telegram_id: int, group_id: int):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -78,6 +79,7 @@ class Users(Base):
         return user_id
 
 
+# noinspection PyTypeChecker,PyShadowingNames,PyMethodParameters
 class Items(Base):
     __tablename__ = "items"
     id = Column(Integer, primary_key=True)
@@ -112,6 +114,7 @@ class Items(Base):
         return user_item
 
 
+# noinspection PyShadowingNames,PyMethodParameters
 class LogBase(Base):
     __tablename__ = "functions_log"
     id = Column(Integer, primary_key=True)
@@ -119,7 +122,7 @@ class LogBase(Base):
     username = Column(String(length=32))
     function_name = Column(String(length=12))
 
-    def add(telegram_id: int, username: str, function_name: str) -> object:
+    def add(telegram_id: int, username: str, function_name: str):
         session = Session()
         func = LogBase(telegram_id=telegram_id, username=username, function_name=function_name)
         session.add(func)
