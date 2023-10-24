@@ -17,7 +17,7 @@ class AddInventory(StatesGroup):
 
 @router.message(F.text == "/support")
 async def support(message: Message):
-    if models.check_vip(message.from_user.id) is True:
+    if models.Users.check_vip(message.from_user.id) is True:
         await message.answer("Напишите - @ZhuchkaTriplesix")
     else:
         await message.answer("У вас нет доступа к этой команде")
@@ -31,7 +31,7 @@ async def vip_help(message: Message):
 
 @router.message(F.text == "/my_items")
 async def my_cases(message: Message):
-    if models.check_vip(message.from_user.id) is True:
+    if models.Users.check_vip(message.from_user.id) is True:
         my_items = models.user_items(message.from_user.id)
         answer = 'Ваши предметы:\n\n'
         for key in my_items:
