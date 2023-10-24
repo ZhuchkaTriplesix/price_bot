@@ -32,7 +32,7 @@ async def vip_help(message: Message):
 @router.message(F.text == "/my_items")
 async def my_cases(message: Message):
     if models.Users.check_vip(message.from_user.id) is True:
-        my_items = models.user_items(message.from_user.id)
+        my_items = models.Items.user_items(message.from_user.id)
         answer = 'Ваши предметы:\n\n'
         for key in my_items:
             answer = answer + f"{key}: {my_items[key]}\n"
@@ -43,7 +43,7 @@ async def my_cases(message: Message):
 
 @router.callback_query(F.data == "items_price")
 async def items_price(callback: CallbackQuery):
-    items = models.user_items(callback.from_user.id)
+    items = models.Items.user_items(callback.from_user.id)
     answer = 'Стоимость вашего инвентаря:\n\n'
     total = 0
     for key in items:
@@ -72,6 +72,6 @@ async def add_item_bd(message: Message, state: FSMContext):
     hash_name = mes[0]
     item_count = int(mes[1])
     telegram_id = message.from_user.id
-    models.add_item(telegram_id, hash_name, item_count)
+    models.Items.add_item(telegram_id, hash_name, item_count)
     await message.answer(f"Вы добавили {hash_name}")
     await state.clear()

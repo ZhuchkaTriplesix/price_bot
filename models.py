@@ -85,33 +85,31 @@ class Items(Base):
     hash_name = Column(String(length=30))
     item_count = Column(Integer)
 
+    def add_item(telegram_id, hash_name, item_count):
+        session = Session()
+        user_id = Users.get_id(telegram_id)
+        item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
+        if item.hash_name is None:
+            item = Items(user_id=user_id, hash_name=hash_name, item_count=item_count)
+            session.add(item)
+            session.commit()
+            session.close()
+        else:
+            item.item_count = item_count
+            session.commit()
+            session.close()
+
+    def user_items(telegram_id):
+        session = Session()
+        user_id = Users.get_id(telegram_id)
+        items = session.query(Items).where(Items.user_id == user_id).all()
+        user_item = {}
+        for i in items:
+            hash_name = i.hash_name
+            item_count = i.item_count
+            u = {hash_name: item_count}
+            user_item.update(u)
+        return user_item
+
 
 Base.metadata.create_all(engine)
-
-
-def add_item(telegram_id, hash_name, item_count):
-    session = Session()
-    user_id = Users.get_id(telegram_id)
-    item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
-    if item.hash_name is None:
-        item = Items(user_id=user_id, hash_name=hash_name, item_count=item_count)
-        session.add(item)
-        session.commit()
-        session.close()
-    else:
-        item.item_count = item_count
-        session.commit()
-        session.close()
-
-
-def user_items(telegram_id):
-    session = Session()
-    user_id = Users.get_id(telegram_id)
-    items = session.query(Items).where(Items.user_id == user_id).all()
-    user_item = {}
-    for i in items:
-        hash_name = i.hash_name
-        item_count = i.item_count
-        u = {hash_name: item_count}
-        user_item.update(u)
-    return user_item
