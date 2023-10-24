@@ -83,7 +83,7 @@ async def delete_admin(message: Message, state: FSMContext):
 
 @router.message(ChangeAccessState.delete_admin_state, F.text)
 async def delete_admin_state(message: Message, state: FSMContext):
-    telegram_id = message.text
+    telegram_id = int(message.text)
     models.Users.change_access(telegram_id, 0)
     await message.answer("Вы удалили админ доступ у пользователя")
     await state.clear()
