@@ -62,7 +62,7 @@ async def add_admin(message: Message, state: FSMContext):
 @router.message(ChangeAccessState.add_admin_id_state, F.text)
 async def add_admin_state(message: Message, state: FSMContext):
     telegram_id = int(message.text)
-    models.change_access(telegram_id, "Admin")
+    models.change_access(telegram_id, 2)
     await message.answer("Вы выдали админ доступ пользователю")
     await state.clear()
 
@@ -79,7 +79,7 @@ async def delete_admin(message: Message, state: FSMContext):
 @router.message(ChangeAccessState.delete_admin_state, F.text)
 async def delete_admin_state(message: Message, state: FSMContext):
     telegram_id = message.text
-    models.change_access(telegram_id, "User")
+    models.change_access(telegram_id, 0)
     await message.answer("Вы удалили админ доступ у пользователя")
     await state.clear()
 
