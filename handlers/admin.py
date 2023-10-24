@@ -28,7 +28,7 @@ async def change_access(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/give_vip")
     telegram_id = message.from_user.id
     if models.Users.check_admin(telegram_id) is True:
-        await message.answer("Введите айди пользователя")
+        await message.answer("Введите айди пользователя.")
         await state.set_state(ChangeAccessState.get_user_id_state)
     else:
         await message.answer("У вас нет доступа к этой команде.")
@@ -37,10 +37,13 @@ async def change_access(message: Message, state: FSMContext):
 @router.message(ChangeAccessState.get_user_id_state, F.text)
 async def change_user_access(message: Message, state: FSMContext):
     telegram_id = message.text
-    telegram_id = int(telegram_id)
-    models.Users.change_access(telegram_id, 1)
-    await message.answer("Вы успешно поменяли группу пользователя, на Vip")
-    await state.clear()
+    try:
+        telegram_id = int(telegram_id)
+        models.Users.change_access(telegram_id, 1)
+        await message.answer("Вы успешно поменяли группу пользователя, на Vip.")
+        await state.clear()
+    except ValueError:
+        await message.answer("Неверный телеграм айди.")
 
 
 @router.message(F.text == "/kill")
@@ -50,43 +53,49 @@ async def kill_process(message: Message):
         await message.answer("Отключаюсь(..")
         sys.exit()
     else:
-        await message.answer("У вас нет доступа к этой команде")
+        await message.answer("У вас нет доступа к этой команде.")
 
 
 @router.message(F.text == "/add_admin")
 async def add_admin(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/add_admin")
     if models.Users.check_admin(message.from_user.id) is True:
-        await message.answer("Введите айди пользователя")
+        await message.answer("Введите айди пользователя.")
         await state.set_state(ChangeAccessState.add_admin_id_state)
     else:
-        await message.answer("У вас нет доступа к этой команде")
+        await message.answer("У вас нет доступа к этой команде.")
 
 
 @router.message(ChangeAccessState.add_admin_id_state, F.text)
 async def add_admin_state(message: Message, state: FSMContext):
-    telegram_id = int(message.text)
-    models.Users.change_access(telegram_id, 2)
-    await message.answer("Вы выдали админ доступ пользователю")
-    await state.clear()
+    try:
+        telegram_id = int(message.text)
+        models.Users.change_access(telegram_id, 2)
+        await message.answer("Вы выдали админ доступ пользователю.")
+        await state.clear()
+    except ValueError:
+        await message.answer("Неверный телеграм айди.")
 
 
 @router.message(F.text == "/delete_admin")
 async def delete_admin(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "delete_admin")
     if models.Users.check_admin(message.from_user.id) is True:
-        await message.answer("Введите айди пользователя")
+        await message.answer("Введите айди пользователя.")
         await state.set_state(ChangeAccessState.delete_admin_state)
     else:
-        await message.answer("У вас нет доступа к этой команде")
+        await message.answer("У вас нет доступа к этой команде.")
 
 
 @router.message(ChangeAccessState.delete_admin_state, F.text)
 async def delete_admin_state(message: Message, state: FSMContext):
-    telegram_id = int(message.text)
-    models.Users.change_access(telegram_id, 0)
-    await message.answer("Вы удалили админ доступ у пользователя")
-    await state.clear()
+    try:
+        telegram_id = int(message.text)
+        models.Users.change_access(telegram_id, 0)
+        await message.answer("Вы удалили админ доступ у пользователя.")
+        await state.clear()
+    except ValueError:
+        await message.answer("Неверный телеграм айди.")
 
 
 @router.message(F.text == "/admin_list")

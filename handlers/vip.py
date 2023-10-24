@@ -74,10 +74,12 @@ async def add_item(message: Message, state: FSMContext):
 @router.message(AddInventory.add_item_state, F.text)
 async def add_item_bd(message: Message, state: FSMContext):
     mes = message.text.split(".")
-    print(mes)
     hash_name = mes[0]
-    item_count = int(mes[1])
-    telegram_id = message.from_user.id
-    models.Items.add_item(telegram_id, hash_name, item_count)
-    await message.answer(f"Вы добавили {hash_name}")
-    await state.clear()
+    try:
+        item_count = int(mes[1])
+        telegram_id = message.from_user.id
+        models.Items.add_item(telegram_id, hash_name, item_count)
+        await message.answer(f"Вы добавили {hash_name}")
+        await state.clear()
+    except ValueError:
+        await message.answer("Ошибка ввода")

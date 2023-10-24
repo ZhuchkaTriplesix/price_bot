@@ -28,7 +28,7 @@ class Users(Base):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
-            print("User is already in database")
+            pass
         else:
             user = Users(telegram_id=telegram_id, username=username)
             Users.add_close(user, session)
@@ -37,7 +37,6 @@ class Users(Base):
         session.add(user)
         session.commit()
         session.close()
-        print("Successful adding")
 
     def add_admin(telegram_id: int, username: str):
         session = Session()
