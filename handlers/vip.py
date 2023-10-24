@@ -83,3 +83,4 @@ async def add_item_bd(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer("Ошибка ввода")
+        await state.clear()
