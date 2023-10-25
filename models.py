@@ -48,7 +48,7 @@ class Users(Base):
             user = Users(username=username, telegram_id=telegram_id, group_id=2)
             Users.add_close(user, session)
 
-    def change_access(telegram_id: int, group_id: int):
+    def change_access(telegram_id: int, group_id: int) -> object:
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -56,6 +56,9 @@ class Users(Base):
             user.updated_at = datetime.datetime.utcnow()
             session.commit()
             session.close()
+            return True
+        else:
+            return False
 
     def check_vip(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()

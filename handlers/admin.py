@@ -37,11 +37,16 @@ async def change_access(message: Message, state: FSMContext):
 async def change_user_access(message: Message, state: FSMContext):
     try:
         telegram_id = int(message.text)
-        models.Users.change_access(telegram_id, 1)
-        await message.answer("Вы успешно поменяли группу пользователя, на Vip.")
-        await state.clear()
+        user = models.Users.change_access(telegram_id, 1)
+        if user is True:
+            await message.answer("Вы успешно поменяли группу пользователя, на Vip.")
+            await state.clear()
+        else:
+            await message.answer("Неверный телеграм айди.")
+            await state.clear()
     except ValueError:
         await message.answer("Неверный телеграм айди.")
+        await state.clear()
 
 
 @router.message(F.text == "/kill")
@@ -68,11 +73,16 @@ async def add_admin(message: Message, state: FSMContext):
 async def add_admin_state(message: Message, state: FSMContext):
     try:
         telegram_id = int(message.text)
-        models.Users.change_access(telegram_id, 2)
-        await message.answer("Вы выдали админ доступ пользователю.")
-        await state.clear()
+        user = models.Users.change_access(telegram_id, 2)
+        if user is True:
+            await message.answer("Вы выдали админ доступ пользователю.")
+            await state.clear()
+        else:
+            await message.answer("Неверный телеграм айди.")
+            await state.clear()
     except ValueError:
         await message.answer("Неверный телеграм айди.")
+        await state.clear()
 
 
 @router.message(F.text == "/delete_admin")
@@ -89,11 +99,16 @@ async def delete_admin(message: Message, state: FSMContext):
 async def delete_admin_state(message: Message, state: FSMContext):
     try:
         telegram_id = int(message.text)
-        models.Users.change_access(telegram_id, 0)
-        await message.answer("Вы удалили админ доступ у пользователя.")
-        await state.clear()
+        user = models.Users.change_access(telegram_id, 0)
+        if user is True:
+            await message.answer("Вы удалили админ доступ у пользователя.")
+            await state.clear()
+        else:
+            await message.answer("Неверный телеграм айди")
+            await state.clear()
     except ValueError:
         await message.answer("Неверный телеграм айди.")
+        await state.clear()
 
 
 @router.message(F.text == "/admin_list")
