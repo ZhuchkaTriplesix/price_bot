@@ -49,7 +49,7 @@ async def change_user_access(message: Message, state: FSMContext):
 @router.message(F.text == "/kill")
 async def kill_process(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/kill")
-    if models.Users.check_admin(message.from_user.id) is True:
+    if models.Users.check_owner(message.from_user.id) is True:
         await message.answer("Отключаюсь(..")
         sys.exit()
     else:
@@ -59,7 +59,7 @@ async def kill_process(message: Message):
 @router.message(F.text == "/add_admin")
 async def add_admin(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/add_admin")
-    if models.Users.check_admin(message.from_user.id) is True:
+    if models.Users.check_owner(message.from_user.id) is True:
         await message.answer("Введите айди пользователя.")
         await state.set_state(ChangeAccessState.add_admin_id_state)
     else:
@@ -80,7 +80,7 @@ async def add_admin_state(message: Message, state: FSMContext):
 @router.message(F.text == "/delete_admin")
 async def delete_admin(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "delete_admin")
-    if models.Users.check_admin(message.from_user.id) is True:
+    if models.Users.check_owner(message.from_user.id) is True:
         await message.answer("Введите айди пользователя.")
         await state.set_state(ChangeAccessState.delete_admin_state)
     else:
