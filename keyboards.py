@@ -2,11 +2,11 @@ from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton,
                            InlineKeyboardMarkup, InlineKeyboardButton)
 
 main = [
-    [KeyboardButton(text="/cases"),
-     KeyboardButton(text="/add_case")],
+    [KeyboardButton(text="💵CASES💵"),
+     KeyboardButton(text="➕ADD CASE➕")],
     [
-        KeyboardButton(text="/clear"),
-        KeyboardButton(text="/vip")]
+        KeyboardButton(text="🗑CLEAR🗑"),
+        KeyboardButton(text="💎VIP💎")]
 ]
 main_kb = ReplyKeyboardMarkup(keyboard=main, resize_keyboard=True)
 cases_inline = [
@@ -71,9 +71,10 @@ admin_keyboard = [
 ]
 admins_kb = ReplyKeyboardMarkup(keyboard=admin_keyboard, resize_keyboard=True)
 user_vip_keyboard = [
-    [KeyboardButton(text="/add_item"),
-     KeyboardButton(text="/my_items")],
-    [KeyboardButton(text="/support"),
-     KeyboardButton(text="/vip_help")]
+    [KeyboardButton(text="➕ADD ITEM➕"),
+     KeyboardButton(text="📈MY ITEMS📈")],
+    [KeyboardButton(text="❌DELETE❌"),
+     KeyboardButton(text="⁉️SUPPORT⁉️"),
+     KeyboardButton(text="❓VIP HELP❓")]
 ]
 users_vip_kb = ReplyKeyboardMarkup(keyboard=user_vip_keyboard, resize_keyboard=True)

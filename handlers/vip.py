@@ -13,9 +13,10 @@ router = Router()
 
 class AddInventory(StatesGroup):
     add_item_state = State()
+    delete_item_state = State()
 
 
-@router.message(F.text == "/support")
+@router.message(F.text == "⁉️SUPPORT⁉️")
 async def support(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/support")
     if models.Users.check_vip(message.from_user.id) is True:
@@ -24,7 +25,7 @@ async def support(message: Message):
         await message.answer("У вас нет доступа к этой команде")
 
 
-@router.message(F.text == "/vip_help")
+@router.message(F.text == "❓VIP HELP❓")
 async def vip_help(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/vip_help")
     await message.answer(
@@ -32,7 +33,7 @@ async def vip_help(message: Message):
 
 
 # noinspection PyTypeChecker
-@router.message(F.text == "/my_items")
+@router.message(F.text == "📈MY ITEMS📈")
 async def my_cases(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/my_items")
     if models.Users.check_vip(message.from_user.id) is True:
@@ -63,7 +64,7 @@ async def items_price(callback: CallbackQuery):
     await callback.message.answer(answer)
 
 
-@router.message(F.text == "/add_item")
+@router.message(F.text == "➕ADD ITEM➕")
 async def add_item(message: Message, state: FSMContext):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/add_item")
     await message.answer(
@@ -74,6 +75,7 @@ async def add_item(message: Message, state: FSMContext):
 @router.message(AddInventory.add_item_state, F.text)
 async def add_item_bd(message: Message, state: FSMContext):
     mes = message.text.split(".")
+    print(mes)
     hash_name = mes[0]
     try:
         item_count = int(mes[1])
@@ -84,3 +86,20 @@ async def add_item_bd(message: Message, state: FSMContext):
     except ValueError:
         await message.answer("Ошибка ввода")
         await state.clear()
+
+
+@router.message(F.text == "❌DELETE❌")
+async def delete_item(message: Message, state: FSMContext):
+    models.LogBase.add(message.from_user.id, message.from_user.username, "/delete")
+    if models.Users.check_vip(message.from_user.id) is True:
+        await message.answer("Введите название предмета.")
+        await state.set_state(AddInventory.delete_item_state)
+    else:
+        await message.answer("У вас недостаточно прав.")
+
+
+@router.message(AddInventory.delete_item_state, F.text)
+async def delete_item_state(message: Message, state: FSMContext):
+    models.Items.delete_item(message.from_user.id, message.text)
+    await message.answer(f"Вы успешно удалили {message.text}")
+    await state.clear()

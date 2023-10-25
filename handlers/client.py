@@ -10,7 +10,7 @@ router = Router()
 json_data = "user_list.json"
 
 
-@router.message(F.text == '/cases')
+@router.message(F.text == '💵CASES💵')
 async def cases(message: Message):
     x = ''
     user_id = f"{message.from_user.id}"
@@ -27,7 +27,7 @@ async def cases(message: Message):
         await message.answer("Вы не добавили кейсы.")
 
 
-@router.message(F.text == "/add_case")
+@router.message(F.text == "➕ADD CASE➕")
 async def item_list(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/add_case")
     await message.answer("Какой кейс вы хотите добавить?:", reply_markup=kb.cases)
@@ -55,7 +55,7 @@ async def answer(callback: CallbackQuery):
         pass
 
 
-@router.message(F.text == '/clear')
+@router.message(F.text == '🗑CLEAR🗑')
 async def clear(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/clear")
     data = json_support.read_inf(json_data)
@@ -75,10 +75,10 @@ async def start(message: Message):
 @router.message(F.text == "/help")
 async def help_func(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/help")
-    await message.answer("Помогите...")
+    await message.answer("А кнопки я зачем называл?")
 
 
-@router.message(F.text == "/vip")
+@router.message(F.text == "💎VIP💎")
 async def get_vip(message: Message):
     models.LogBase.add(message.from_user.id, message.from_user.username, "/vip")
     if models.Users.check_vip(message.from_user.id) is True:
