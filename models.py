@@ -136,6 +136,7 @@ class LogBase(Base):
     telegram_id = Column(BigInteger, index=True)
     username = Column(String(length=32))
     function_name = Column(String(length=12))
+    time_used = Column(DateTime, default=datetime.datetime.utcnow)
 
     def add(telegram_id: int, username: str, function_name: str):
         session = Session()
