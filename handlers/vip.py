@@ -49,6 +49,7 @@ async def my_cases(message: Message):
 # noinspection PyTypeChecker
 @router.callback_query(F.data == "items_price")
 async def items_price(callback: CallbackQuery):
+    models.LogBase.add(callback.from_user.id, callback.from_user.username, "items_price")
     items = models.Items.user_items(callback.from_user.id)
     answer = 'Стоимость вашего инвентаря:\n\n'
     total = 0
@@ -75,7 +76,6 @@ async def add_item(message: Message, state: FSMContext):
 @router.message(AddInventory.add_item_state, F.text)
 async def add_item_bd(message: Message, state: FSMContext):
     mes = message.text.split(".")
-    print(mes)
     hash_name = mes[0]
     try:
         item_count = int(mes[1])

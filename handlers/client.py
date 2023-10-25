@@ -35,8 +35,8 @@ async def item_list(message: Message):
 
 @router.callback_query()
 async def answer(callback: CallbackQuery):
-    user_id = callback.message.chat.id
-    user_id = f"{user_id}"
+    models.LogBase.add(callback.from_user.id, callback.from_user.username, "add_callback")
+    user_id = f"{callback.message.chat.id}"
     case = case_translation.case_translation(callback.data)
     await callback.message.answer(f"Вы добавили {case}.")
     data = json_support.read_inf(json_data)

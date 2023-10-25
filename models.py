@@ -14,6 +14,7 @@ session = scoped_session(Session)
 conn = engine.connect()
 
 
+# Database user_group: {0: user, 1: vip, 2: admin, 3: owner}
 # noinspection PyTypeChecker,PyMethodParameters,PyShadowingNames
 class Users(Base):
     __tablename__ = "users"
@@ -47,7 +48,7 @@ class Users(Base):
             user = Users(username=username, telegram_id=telegram_id, group_id=2)
             Users.add_close(user, session)
 
-    def change_access(telegram_id: int, group_id: int):
+    def change_access(telegram_id: int, group_id: int) -> object:
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         if user is not None:
@@ -55,11 +56,22 @@ class Users(Base):
             user.updated_at = datetime.datetime.utcnow()
             session.commit()
             session.close()
+            return True
+        else:
+            return False
 
     def check_vip(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_group = user.group_id
         if user_group >= 1:
+            return True
+        else:
+            return False
+
+    def check_owner(telegram_id: int) -> object:
+        user = session.query(Users).where(Users.telegram_id == telegram_id).first()
+        user_group = user.group_id
+        if user_group >= 3:
             return True
         else:
             return False
@@ -127,6 +139,7 @@ class LogBase(Base):
     telegram_id = Column(BigInteger, index=True)
     username = Column(String(length=32))
     function_name = Column(String(length=12))
+    time_used = Column(DateTime, default=datetime.datetime.utcnow)
 
     def add(telegram_id: int, username: str, function_name: str):
         session = Session()
