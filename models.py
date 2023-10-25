@@ -86,11 +86,11 @@ class Items(Base):
     hash_name = Column(String(length=30))
     item_count = Column(Integer)
 
-    def add_item(telegram_id: int, hash_name: str, item_count: int) -> object:
+    def add_item(telegram_id: int, hash_name: str, item_count: int):
         session = Session()
         user_id = Users.get_id(telegram_id)
         item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
-        if item.hash_name is None:
+        if item is None:
             item = Items(user_id=user_id, hash_name=hash_name, item_count=item_count)
             session.add(item)
             session.commit()
@@ -111,6 +111,13 @@ class Items(Base):
             u = {hash_name: item_count}
             user_item.update(u)
         return user_item
+
+    def delete_item(telegram_id: int, hash_name: str):
+        session = Session()
+        user_id = Users.get_id(telegram_id)
+        item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
+        session.delete(item)
+        session.commit()
 
 
 # noinspection PyShadowingNames,PyMethodParameters
