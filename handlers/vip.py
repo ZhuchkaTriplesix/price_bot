@@ -76,7 +76,6 @@ async def add_item(message: Message, state: FSMContext):
 @router.message(AddInventory.add_item_state, F.text)
 async def add_item_bd(message: Message, state: FSMContext):
     mes = message.text.split(".")
-    print(mes)
     hash_name = mes[0]
     try:
         item_count = int(mes[1])
