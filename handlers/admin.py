@@ -10,10 +10,13 @@ import models
 router = Router()
 
 
+# test commit
+
 class ChangeAccessState(StatesGroup):
     get_user_id_state = State()
     add_admin_id_state = State()
     delete_admin_state = State()
+    del_item_state = State()
 
 
 @router.message(F.text == "/admin")
@@ -124,3 +127,26 @@ async def admin_list(message: Message):
         x = f"@{admin.username}: {admin.telegram_id} Admin\n"
         bot_message += x
     await message.answer(bot_message)
+
+
+@router.message(F.text == "/del_item")
+async def del_item(message: Message, state: FSMContext):
+    if models.Users.check_admin(message.from_user.id) is True:
+        await message.answer("Введите айди.хешнейм")
+        await state.set_state(ChangeAccessState.del_item_state)
+    else:
+        await message.answer("У вас нет доступа.")
+
+
+@router.message(ChangeAccessState.del_item_state, F.text)
+async def del_item_state(message: Message, state: FSMContext):
+    mes = message.text.split(".")
+    hash_name = mes[1]
+    try:
+        telegram_id = int(mes[0])
+        models.Items.delete_item(telegram_id, hash_name)
+        await message.answer("Вы удалили предмет у пользователя.")
+        await state.clear()
+    except ValueError:
+        await message.answer("Неверный ввод.")
+        await state.clear()

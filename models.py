@@ -95,7 +95,7 @@ class Items(Base):
     __tablename__ = "items"
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
-    hash_name = Column(String(length=30))
+    hash_name = Column(String(length=60))
     item_count = Column(Integer)
 
     def add_item(telegram_id: int, hash_name: str, item_count: int):
@@ -130,6 +130,7 @@ class Items(Base):
         item = session.query(Items).filter(Items.hash_name == hash_name).where(Items.user_id == user_id).first()
         session.delete(item)
         session.commit()
+        session.close()
 
 
 # noinspection PyShadowingNames,PyMethodParameters
