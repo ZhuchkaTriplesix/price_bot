@@ -2,12 +2,12 @@ from sqlalchemy import Column, Integer, String, DateTime, BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 import datetime
-from data.config import host, user, password, db_name
+from core.config import settings
 import pg8000
 
 Base = declarative_base()
 
-engine = create_engine(f'postgresql+pg8000://{user}:{password}@{host}/{db_name}', echo=False)
+engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, echo=False)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
