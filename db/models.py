@@ -2,12 +2,12 @@ from sqlalchemy import Column, Integer, String, DateTime, BigInteger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
 import datetime
-from data.config import host, user, password, db_name
+from core.config import settings
 import pg8000
 
 Base = declarative_base()
 
-engine = create_engine(f'postgresql+pg8000://{user}:{password}@{host}/{db_name}', echo=False)
+engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, echo=False)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
@@ -25,6 +25,7 @@ class Users(Base):
     created_date = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+    @staticmethod
     def add_user(telegram_id: int, username: str):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
@@ -34,11 +35,13 @@ class Users(Base):
             user = Users(telegram_id=telegram_id, username=username)
             Users.add_close(user, session)
 
+    @staticmethod
     def add_close(user, session):
         session.add(user)
         session.commit()
         session.close()
 
+    @staticmethod
     def add_admin(telegram_id: int, username: str):
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
@@ -48,6 +51,7 @@ class Users(Base):
             user = Users(username=username, telegram_id=telegram_id, group_id=2)
             Users.add_close(user, session)
 
+    @staticmethod
     def change_access(telegram_id: int, group_id: int) -> object:
         session = Session()
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
@@ -60,6 +64,7 @@ class Users(Base):
         else:
             return False
 
+    @staticmethod
     def check_vip(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_group = user.group_id
@@ -68,6 +73,7 @@ class Users(Base):
         else:
             return False
 
+    @staticmethod
     def check_owner(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_group = user.group_id
@@ -76,6 +82,7 @@ class Users(Base):
         else:
             return False
 
+    @staticmethod
     def check_admin(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_group = user.group_id
@@ -84,6 +91,7 @@ class Users(Base):
         else:
             return False
 
+    @staticmethod
     def get_id(telegram_id: int) -> object:
         user = session.query(Users).where(Users.telegram_id == telegram_id).first()
         user_id = user.id
@@ -98,6 +106,7 @@ class Items(Base):
     hash_name = Column(String(length=60))
     item_count = Column(Integer)
 
+    @staticmethod
     def add_item(telegram_id: int, hash_name: str, item_count: int):
         session = Session()
         user_id = Users.get_id(telegram_id)
@@ -112,6 +121,7 @@ class Items(Base):
             session.commit()
             session.close()
 
+    @staticmethod
     def user_items(telegram_id: int) -> object:
         session = Session()
         user_id = Users.get_id(telegram_id)
@@ -124,6 +134,7 @@ class Items(Base):
             user_item.update(u)
         return user_item
 
+    @staticmethod
     def delete_item(telegram_id: int, hash_name: str):
         session = Session()
         user_id = Users.get_id(telegram_id)
@@ -142,6 +153,7 @@ class LogBase(Base):
     function_name = Column(String(length=12))
     time_used = Column(DateTime, default=datetime.datetime.utcnow)
 
+    @staticmethod
     def add(telegram_id: int, username: str, function_name: str):
         session = Session()
         func = LogBase(telegram_id=telegram_id, username=username, function_name=function_name)

@@ -1,11 +1,11 @@
 from aiogram import F
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message
-import keyboards as kb
+from misc import keyboards as kb
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 import sys
-import models
+from db import models
 
 router = Router()
 

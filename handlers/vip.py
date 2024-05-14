@@ -3,8 +3,8 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, CallbackQuery
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
-import models
-import keyboards as kb
+from db import models
+from misc import keyboards as kb
 import steammarket as sm
 from data.config import sell_fee
 

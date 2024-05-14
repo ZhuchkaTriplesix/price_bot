@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+
+  bot:
+    build: .
+    restart: always
+    depends_on:
+      - postgres
+    volumes:
+      - .:/price_bot
+    ports:
+      - "8080:8080"

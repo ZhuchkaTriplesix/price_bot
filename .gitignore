@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 users_time.json
 user_list.json
+.env
 __pycache__/
 *.py[cod]
 *$py.class
@@ -17,8 +18,6 @@ cases.json
 .idea/vcs.xml
 users.db
 .DS_Store
-docker-compose.yaml
-Dockerfile
 data/config.py
 # Distribution / packaging
 .Python

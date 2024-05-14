@@ -1,10 +1,10 @@
 from aiogram import F
 from aiogram.types import Message, CallbackQuery
 import steammarket as sm
-from data import json_support, case_translation
-import keyboards as kb
+from misc import json_support, case_translation
+from misc import keyboards as kb
 from aiogram import Router
-import models
+from db import models
 
 router = Router()
 json_data = "user_list.json"
