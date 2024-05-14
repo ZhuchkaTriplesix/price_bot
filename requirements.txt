@@ -1,0 +1,7 @@
+aiogram~=3.6.0
+pg8000~=1.31.2
+SQLAlchemy~=2.0.30
+python-dotenv~=1.0.1
+pydantic-settings
+pydantic~=2.7.1
+steammarket~=0.2.7
