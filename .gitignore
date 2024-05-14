@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 users_time.json
 user_list.json
+.env
 __pycache__/
 *.py[cod]
 *$py.class
