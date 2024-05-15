@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from db import models
 from misc import keyboards as kb
 import steammarket as sm
-from data.config import sell_fee
+from core.config import settings
 
 router = Router()
 
@@ -61,7 +61,7 @@ async def items_price(callback: CallbackQuery):
         total += multi_price
         answer = answer + f"{key}: {items[key]} * {item_price['lowest_price']} = {round(multi_price, 2)} руб.\n"
     answer = answer + f"\nСтоимость всего инвентаря: {round(total, 2)} руб.\n"
-    answer = answer + f"\nСтоимость с учетом комиссии: {round(total * sell_fee, 2)} руб."
+    answer = answer + f"\nСтоимость с учетом комиссии: {round(total * settings.SELL_FEE, 2)} руб."
     await callback.message.answer(answer)
 
 
