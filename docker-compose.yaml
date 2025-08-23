@@ -8,8 +8,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      - DATABASE_GRPC_ADDR=database:50051
     command: ["uv", "run", "python", "-m", "bot.src.main"]
     volumes:
       - ./.env:/app/.env:ro
@@ -24,9 +22,6 @@ services:
       dockerfile: database/Dockerfile
     env_file:
       - .env
-    environment:
-      - DATABASE_DSN=${DATABASE_DSN:-postgresql+psycopg://postgres:postgres@postgres:5432/pricebot}
-      - GRPC_PORT=50051
     ports:
       - "50051:50051"
     depends_on:
@@ -35,10 +30,8 @@ services:
   postgres:
     image: postgres:16
     restart: unless-stopped
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-pricebot}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    env_file:
+      - .env
     ports:
       - "5432:5432"
 
