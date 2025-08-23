@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 try:
     import grpc  # type: ignore
@@ -16,10 +16,12 @@ except Exception:  # pragma: no cover - allow running without stubs locally
 @dataclass(slots=True)
 class DatabaseClient:
     target: str
+    channel: Any | None = None
+    stub: Any | None = None
 
     def __post_init__(self) -> None:
-        self.channel = None
-        self.stub = None
+        # Attributes are declared with defaults for slots; nothing to initialize here
+        pass
 
     async def start(self) -> None:
         if grpc is None:

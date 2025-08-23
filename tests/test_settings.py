@@ -7,7 +7,7 @@ import pytest
     "env_owner,env_admin,expected_owner,expected_admin",
     [
         ("[1,2]", "[3,4]", [1, 2], [3, 4]),
-        ("", "", [], []),
+        ("[]", "[]", [], []),
         (None, None, [], []),
     ],
 )
