@@ -2,7 +2,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 
 from bot.src.config import settings
-from bot.src.handlers import admin_router
+from bot.src.handlers.admin.router import router as admin_router
 
 
 async def main() -> None:
