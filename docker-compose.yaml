@@ -14,4 +14,28 @@ services:
     ports:
       - "8080:8080"
 
+  database:
+    build:
+      context: .
+      dockerfile: database/Dockerfile
+    env_file:
+      - .env
+    environment:
+      - DATABASE_DSN=${DATABASE_DSN}
+      - GRPC_PORT=50051
+    ports:
+      - "50051:50051"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+
   # Database moved to a separate service per future architecture; not started here
