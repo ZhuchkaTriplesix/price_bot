@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package database;
+
+service DatabaseService {
+  rpc ChangeAccess(ChangeAccessRequest) returns (ChangeAccessResponse);
+  rpc IsOwner(IsAccessRequest) returns (IsAccessResponse);
+  rpc IsAdmin(IsAccessRequest) returns (IsAccessResponse);
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse);
+  rpc UserItems(UserItemsRequest) returns (UserItemsResponse);
+  rpc AddLog(AddLogRequest) returns (AddLogResponse);
+}
+
+message ChangeAccessRequest { int64 telegram_id = 1; int32 group_id = 2; }
+message ChangeAccessResponse { bool ok = 1; }
+
+message IsAccessRequest { int64 telegram_id = 1; }
+message IsAccessResponse { bool ok = 1; }
+
+message DeleteItemRequest { int64 telegram_id = 1; string hash_name = 2; }
+message DeleteItemResponse { bool ok = 1; }
+
+message UserItemsRequest { int64 telegram_id = 1; }
+message UserItemsResponse { map<string, int32> items = 1; }
+
+message AddLogRequest { int64 telegram_id = 1; string username = 2; string function_name = 3; }
+message AddLogResponse { bool ok = 1; }
+
+
