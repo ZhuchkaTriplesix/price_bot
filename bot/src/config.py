@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     OWNER_IDS: List[int] = Field(default_factory=list, description="List of owner user IDs")
     ADMIN_IDS: List[int] = Field(default_factory=list, description="List of admin user IDs")
 
+    # External services
+    DATABASE_GRPC_ADDR: str | None = Field(default=None, description="database gRPC address, e.g. database:50051")
+
     @field_validator("OWNER_IDS", "ADMIN_IDS", mode="before")
     @classmethod
     def parse_int_list(cls, value: str | list[int] | None) -> list[int]:
