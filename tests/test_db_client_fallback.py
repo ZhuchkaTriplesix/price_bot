@@ -17,5 +17,3 @@ async def test_db_client_fallback_methods_without_stubs():
     assert await client.user_items(1) == {}
     # add_log no return, should not raise
     await client.add_log(1, "user", "fn")
-
-

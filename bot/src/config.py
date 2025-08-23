@@ -18,11 +18,17 @@ class Settings(BaseSettings):
     TOKEN: str = Field(..., description="Telegram bot token")
 
     # Access control (kept in env for now; DB will be moved to another service later)
-    OWNER_IDS: List[int] = Field(default_factory=list, description="List of owner user IDs")
-    ADMIN_IDS: List[int] = Field(default_factory=list, description="List of admin user IDs")
+    OWNER_IDS: List[int] = Field(
+        default_factory=list, description="List of owner user IDs"
+    )
+    ADMIN_IDS: List[int] = Field(
+        default_factory=list, description="List of admin user IDs"
+    )
 
     # External services
-    DATABASE_GRPC_ADDR: str | None = Field(default=None, description="database gRPC address, e.g. database:50051")
+    DATABASE_GRPC_ADDR: str | None = Field(
+        default=None, description="database gRPC address, e.g. database:50051"
+    )
 
     @field_validator("OWNER_IDS", "ADMIN_IDS", mode="before")
     @classmethod
@@ -39,5 +45,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-

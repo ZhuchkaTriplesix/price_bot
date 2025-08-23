@@ -67,5 +67,3 @@ async def delete_item(payload: DeleteItemPayload) -> str:
         await client.delete_item(payload.telegram_id, payload.hash_name)
         await client.stop()
     return "Вы удалили предмет у пользователя."
-
-

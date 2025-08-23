@@ -48,5 +48,3 @@ _EN_TO_RU_CASES: Dict[str, str] = {
 
 def translate_case_name_to_russian(english_name: str) -> str:
     return _EN_TO_RU_CASES.get(english_name, english_name)
-
-

@@ -14,5 +14,3 @@ def test_orjson_allows_non_str_keys():
     parsed = orjson_loads(s)
     # non-str keys become strings in JSON
     assert parsed == {"1": "one", "2": "two"}
-
-

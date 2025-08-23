@@ -14,8 +14,12 @@ class Users(Base):
     telegram_id: Mapped[int] = mapped_column(BigInteger, index=True)
     username: Mapped[str | None] = mapped_column(String(length=32))
     group_id: Mapped[int] = mapped_column(Integer, default=0)
-    created_date: Mapped[dt.datetime] = mapped_column(DateTime, default=dt.datetime.utcnow)
-    updated_at: Mapped[dt.datetime] = mapped_column(DateTime, default=dt.datetime.utcnow)
+    created_date: Mapped[dt.datetime] = mapped_column(
+        DateTime, default=dt.datetime.utcnow
+    )
+    updated_at: Mapped[dt.datetime] = mapped_column(
+        DateTime, default=dt.datetime.utcnow
+    )
 
 
 class Items(Base):
@@ -35,5 +39,3 @@ class LogBase(Base):
     username: Mapped[str | None] = mapped_column(String(length=32))
     function_name: Mapped[str] = mapped_column(String(length=12))
     time_used: Mapped[dt.datetime] = mapped_column(DateTime, default=dt.datetime.utcnow)
-
-

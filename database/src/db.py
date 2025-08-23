@@ -39,8 +39,8 @@ def session_scope(session_factory: sessionmaker[Session]) -> Iterator[Session]:
         session.close()
 
 
-def session_generator(session_factory: sessionmaker[Session]) -> Generator[Session, None, None]:
+def session_generator(
+    session_factory: sessionmaker[Session],
+) -> Generator[Session, None, None]:
     with session_scope(session_factory) as session:
         yield session
-
-

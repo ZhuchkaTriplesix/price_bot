@@ -13,5 +13,3 @@ from bot.src.misc.translation import translate_case_name_to_russian
 )
 def test_translate_case_name_to_russian(src, expected):
     assert translate_case_name_to_russian(src) == expected
-
-

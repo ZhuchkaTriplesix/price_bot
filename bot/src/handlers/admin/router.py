@@ -142,5 +142,3 @@ async def del_item_state(message: Message, state: FSMContext):
     except ValueError:
         await message.answer("Неверный ввод.")
         await state.clear()
-
-

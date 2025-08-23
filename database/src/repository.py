@@ -11,7 +11,9 @@ from .models import Users, Items, LogBase
 class UserRepository:
     @staticmethod
     def get_by_telegram_id(session: Session, telegram_id: int) -> Users | None:
-        return session.execute(select(Users).where(Users.telegram_id == telegram_id)).scalar_one_or_none()
+        return session.execute(
+            select(Users).where(Users.telegram_id == telegram_id)
+        ).scalar_one_or_none()
 
     @staticmethod
     def add_user(session: Session, telegram_id: int, username: str | None) -> Users:
@@ -59,7 +61,11 @@ class ItemRepository:
         user = UserRepository.get_by_telegram_id(session, telegram_id)
         if user is None:
             return {}
-        rows = session.execute(select(Items).where(Items.user_id == user.id)).scalars().all()
+        rows = (
+            session.execute(select(Items).where(Items.user_id == user.id))
+            .scalars()
+            .all()
+        )
         out: Dict[str, int] = {}
         for item in rows:
             out[item.hash_name] = item.item_count
@@ -68,7 +74,11 @@ class ItemRepository:
 
 class LogRepository:
     @staticmethod
-    def add(session: Session, telegram_id: int, username: Optional[str], function_name: str) -> None:
-        session.add(LogBase(telegram_id=telegram_id, username=username, function_name=function_name))
-
-
+    def add(
+        session: Session, telegram_id: int, username: Optional[str], function_name: str
+    ) -> None:
+        session.add(
+            LogBase(
+                telegram_id=telegram_id, username=username, function_name=function_name
+            )
+        )

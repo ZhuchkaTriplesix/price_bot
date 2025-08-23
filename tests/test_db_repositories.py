@@ -38,4 +38,3 @@ def test_user_and_items_flow_postgres():
         assert items.get("x") == 1
         # delete
         assert ItemRepository.delete_item(session, 99999, "x") is True
-

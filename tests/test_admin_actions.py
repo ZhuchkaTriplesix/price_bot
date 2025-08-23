@@ -11,6 +11,7 @@ def configure_env(monkeypatch):
     monkeypatch.setenv("ADMIN_IDS", "[3,4]")
     # Reload settings and then action so env is applied
     import bot.src.config as cfg
+
     importlib.reload(cfg)
     importlib.reload(action)
 
@@ -26,7 +27,9 @@ def test_owner_access_denied():
     assert "нет доступа" in (result.error or "")
 
 
-@pytest.mark.parametrize("user_id,allowed", [(3, True), (4, True), (1, True), (99, False)])
+@pytest.mark.parametrize(
+    "user_id,allowed", [(3, True), (4, True), (1, True), (99, False)]
+)
 def test_admin_access(user_id, allowed):
     result = action.check_admin_access(user_id)
     assert result.is_allowed is allowed
@@ -36,7 +39,9 @@ def test_admin_access(user_id, allowed):
 async def test_action_messages():
     assert "Vip" in await action.give_vip(action.TelegramIdPayload(telegram_id=5))
     assert "выдали" in await action.add_admin(action.TelegramIdPayload(telegram_id=5))
-    assert "удалили админ" in await action.delete_admin(action.TelegramIdPayload(telegram_id=5))
-    assert "удалили предмет" in await action.delete_item(action.DeleteItemPayload(telegram_id=5, hash_name="x"))
-
-
+    assert "удалили админ" in await action.delete_admin(
+        action.TelegramIdPayload(telegram_id=5)
+    )
+    assert "удалили предмет" in await action.delete_item(
+        action.DeleteItemPayload(telegram_id=5, hash_name="x")
+    )

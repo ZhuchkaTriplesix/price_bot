@@ -24,5 +24,3 @@ def test_delete_item_payload_valid():
 def test_delete_item_payload_invalid(hash_name):
     with pytest.raises(ValidationError):
         DeleteItemPayload(telegram_id=1, hash_name=hash_name)
-
-

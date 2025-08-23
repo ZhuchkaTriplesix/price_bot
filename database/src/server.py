@@ -25,7 +25,9 @@ class DatabaseService(database_pb2_grpc.DatabaseServiceServicer):
 
     def ChangeAccess(self, request, context):
         with session_scope(self._session_factory) as session:
-            ok = UserRepository.change_access(session, int(request.telegram_id), int(request.group_id))
+            ok = UserRepository.change_access(
+                session, int(request.telegram_id), int(request.group_id)
+            )
             return database_pb2.ChangeAccessResponse(ok=ok)
 
     def IsOwner(self, request, context):
@@ -40,7 +42,9 @@ class DatabaseService(database_pb2_grpc.DatabaseServiceServicer):
 
     def DeleteItem(self, request, context):
         with session_scope(self._session_factory) as session:
-            ok = ItemRepository.delete_item(session, int(request.telegram_id), request.hash_name)
+            ok = ItemRepository.delete_item(
+                session, int(request.telegram_id), request.hash_name
+            )
             return database_pb2.DeleteItemResponse(ok=ok)
 
     def UserItems(self, request, context):
@@ -50,7 +54,12 @@ class DatabaseService(database_pb2_grpc.DatabaseServiceServicer):
 
     def AddLog(self, request, context):
         with session_scope(self._session_factory) as session:
-            LogRepository.add(session, int(request.telegram_id), request.username or None, request.function_name)
+            LogRepository.add(
+                session,
+                int(request.telegram_id),
+                request.username or None,
+                request.function_name,
+            )
             return database_pb2.AddLogResponse(ok=True)
 
 
@@ -60,7 +69,9 @@ async def serve() -> None:
     session_factory = get_session_factory(settings.DATABASE_DSN)
 
     server = grpc.aio.server()
-    database_pb2_grpc.add_DatabaseServiceServicer_to_server(DatabaseService(session_factory), server)
+    database_pb2_grpc.add_DatabaseServiceServicer_to_server(
+        DatabaseService(session_factory), server
+    )
     listen_addr = f"{settings.GRPC_HOST}:{settings.GRPC_PORT}"
     server.add_insecure_port(listen_addr)
     await server.start()
@@ -69,5 +80,3 @@ async def serve() -> None:
 
 if __name__ == "__main__":
     asyncio.run(serve())
-
-

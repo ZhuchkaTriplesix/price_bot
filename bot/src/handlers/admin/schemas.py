@@ -17,5 +17,3 @@ class DeleteItemPayload(BaseModel):
         if not v or not v.strip():
             raise ValueError("hash_name must not be blank")
         return v
-
-
