@@ -1,16 +1,17 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  postgres:
-    image: postgres:latest
-    restart: always
-
   bot:
-    build: .
-    restart: always
-    depends_on:
-      - postgres
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: ["uv", "run", "python", "-m", "bot.src.main"]
     volumes:
-      - .:/price_bot
+      - ./.env:/app/.env:ro
     ports:
       - "8080:8080"
+
+  # Database moved to a separate service per future architecture; not started here
