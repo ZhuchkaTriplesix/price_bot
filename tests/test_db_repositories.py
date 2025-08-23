@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy.orm import Session
 
 from database.src.db import Base, create_all, get_session_factory, session_scope
-from database.src.models import Users, Items
+from database.src.models import Items
 from database.src.repository import UserRepository, ItemRepository
 
 

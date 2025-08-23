@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import os
-from concurrent import futures
 
 import grpc
 from pydantic_settings import BaseSettings

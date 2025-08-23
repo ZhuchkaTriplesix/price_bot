@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime as dt
-from sqlalchemy import Column, Integer, String, DateTime, BigInteger
+from sqlalchemy import Integer, String, DateTime, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .db import Base
