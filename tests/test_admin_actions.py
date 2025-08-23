@@ -9,7 +9,9 @@ from bot.src.handlers.admin import action
 def configure_env(monkeypatch):
     monkeypatch.setenv("OWNER_IDS", "1,2")
     monkeypatch.setenv("ADMIN_IDS", "3,4")
-    # Reload settings module consumers so env is applied
+    # Reload settings and then action so env is applied
+    import bot.src.config as cfg
+    importlib.reload(cfg)
     importlib.reload(action)
 
 
