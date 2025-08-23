@@ -2,6 +2,10 @@
 users_time.json
 user_list.json
 .env
+!.env.example
+# gRPC generated files
+database/proto/*_pb2.py
+database/proto/*_pb2_grpc.py
 __pycache__/
 *.py[cod]
 *$py.class
