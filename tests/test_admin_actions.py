@@ -32,10 +32,11 @@ def test_admin_access(user_id, allowed):
     assert result.is_allowed is allowed
 
 
-def test_action_messages():
-    assert "Vip" in action.give_vip(action.TelegramIdPayload(telegram_id=5))
-    assert "выдали" in action.add_admin(action.TelegramIdPayload(telegram_id=5))
-    assert "удалили админ" in action.delete_admin(action.TelegramIdPayload(telegram_id=5))
-    assert "удалили предмет" in action.delete_item(action.DeleteItemPayload(telegram_id=5, hash_name="x"))
+@pytest.mark.asyncio
+async def test_action_messages():
+    assert "Vip" in await action.give_vip(action.TelegramIdPayload(telegram_id=5))
+    assert "выдали" in await action.add_admin(action.TelegramIdPayload(telegram_id=5))
+    assert "удалили админ" in await action.delete_admin(action.TelegramIdPayload(telegram_id=5))
+    assert "удалили предмет" in await action.delete_item(action.DeleteItemPayload(telegram_id=5, hash_name="x"))
 
 
