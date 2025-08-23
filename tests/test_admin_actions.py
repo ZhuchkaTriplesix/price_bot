@@ -1,4 +1,4 @@
-import os
+import importlib
 
 import pytest
 
@@ -9,6 +9,8 @@ from bot.src.handlers.admin import action
 def configure_env(monkeypatch):
     monkeypatch.setenv("OWNER_IDS", "1,2")
     monkeypatch.setenv("ADMIN_IDS", "3,4")
+    # Reload settings module consumers so env is applied
+    importlib.reload(action)
 
 
 def test_owner_access_allowed():
