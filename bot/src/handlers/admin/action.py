@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable
 
 from bot.src.config import settings
+from bot.src.services.database_client import DatabaseClient
 from .schemas import TelegramIdPayload, DeleteItemPayload
 
 
@@ -33,20 +33,39 @@ def check_admin_access(user_id: int) -> AccessCheckResult:
     return AccessCheckResult(False, "У вас нет доступа к этой команде.")
 
 
-def add_admin(payload: TelegramIdPayload) -> str:
-    # No DB ops; emulate success and rely on future service integration
+async def add_admin(payload: TelegramIdPayload) -> str:
+    if settings.DATABASE_GRPC_ADDR:
+        client = DatabaseClient(settings.DATABASE_GRPC_ADDR)
+        await client.start()
+        await client.change_access(payload.telegram_id, 2)
+        await client.stop()
     return "Вы выдали админ доступ пользователю."
 
 
-def give_vip(payload: TelegramIdPayload) -> str:
+async def give_vip(payload: TelegramIdPayload) -> str:
+    if settings.DATABASE_GRPC_ADDR:
+        client = DatabaseClient(settings.DATABASE_GRPC_ADDR)
+        await client.start()
+        await client.change_access(payload.telegram_id, 1)
+        await client.stop()
     return "Вы успешно поменяли группу пользователя, на Vip."
 
 
-def delete_admin(payload: TelegramIdPayload) -> str:
+async def delete_admin(payload: TelegramIdPayload) -> str:
+    if settings.DATABASE_GRPC_ADDR:
+        client = DatabaseClient(settings.DATABASE_GRPC_ADDR)
+        await client.start()
+        await client.change_access(payload.telegram_id, 0)
+        await client.stop()
     return "Вы удалили админ доступ у пользователя."
 
 
-def delete_item(payload: DeleteItemPayload) -> str:
+async def delete_item(payload: DeleteItemPayload) -> str:
+    if settings.DATABASE_GRPC_ADDR:
+        client = DatabaseClient(settings.DATABASE_GRPC_ADDR)
+        await client.start()
+        await client.delete_item(payload.telegram_id, payload.hash_name)
+        await client.stop()
     return "Вы удалили предмет у пользователя."
 
 

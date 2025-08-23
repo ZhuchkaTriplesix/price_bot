@@ -42,7 +42,7 @@ async def change_user_access(message: Message, state: FSMContext):
     try:
         telegram_id = int(message.text)
         payload = TelegramIdPayload(telegram_id=telegram_id)
-        answer = action.give_vip(payload)
+        answer = await action.give_vip(payload)
         await message.answer(answer)
         await state.clear()
     except ValueError:
@@ -75,7 +75,7 @@ async def add_admin_state(message: Message, state: FSMContext):
     try:
         telegram_id = int(message.text)
         payload = TelegramIdPayload(telegram_id=telegram_id)
-        answer = action.add_admin(payload)
+        answer = await action.add_admin(payload)
         await message.answer(answer)
         await state.clear()
     except ValueError:
@@ -98,7 +98,7 @@ async def delete_admin_state(message: Message, state: FSMContext):
     try:
         telegram_id = int(message.text)
         payload = TelegramIdPayload(telegram_id=telegram_id)
-        answer = action.delete_admin(payload)
+        answer = await action.delete_admin(payload)
         await message.answer(answer)
         await state.clear()
     except ValueError:
@@ -136,7 +136,7 @@ async def del_item_state(message: Message, state: FSMContext):
     try:
         telegram_id = int(mes[0])
         payload = DeleteItemPayload(telegram_id=telegram_id, hash_name=hash_name)
-        answer = action.delete_item(payload)
+        answer = await action.delete_item(payload)
         await message.answer(answer)
         await state.clear()
     except ValueError:
