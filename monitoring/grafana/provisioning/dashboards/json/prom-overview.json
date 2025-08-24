@@ -1,0 +1,15 @@
+{
+  "title": "Prometheus: Overview",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Prometheus TSDB Head Chunks",
+      "targets": [
+        { "expr": "prometheus_tsdb_head_chunks" }
+      ]
+    }
+  ],
+  "schemaVersion": 36,
+  "version": 1
+}
+

@@ -38,3 +38,19 @@ For production (reads from .env):
 ```
 docker compose -f docker-compose.yaml -f docker-compose.prod.yml up -d --build
 ```
+
+## Monitoring
+
+We ship a full observability stack: Loki, Promtail, Prometheus, Grafana.
+
+Quickstart (local):
+
+```
+docker compose -f docker-compose.yaml -f docker-compose.local.yml up -d loki promtail prometheus grafana
+```
+
+- Grafana: http://localhost:3000 (admin/admin)
+- Prometheus: http://localhost:9090
+- Loki: http://localhost:3100/ready
+
+See detailed guide in `docs/observability.md`.
