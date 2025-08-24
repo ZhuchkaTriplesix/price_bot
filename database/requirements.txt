@@ -1,0 +1,8 @@
+sqlalchemy~=2.0.30
+pydantic-settings~=2.3.0
+psycopg[binary]~=3.2.1
+orjson~=3.10.7
+grpcio~=1.66.1
+grpcio-tools~=1.66.1
+uvicorn~=0.30.5
+

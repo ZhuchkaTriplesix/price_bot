@@ -1,0 +1,16 @@
+{
+  "title": "Loki: Application Logs",
+  "panels": [
+    {
+      "type": "logs",
+      "title": "Container Logs",
+      "targets": [
+        { "expr": "{job=\"docker-logs\"}" }
+      ],
+      "options": { "showLabels": true, "wrapLogMessage": true }
+    }
+  ],
+  "schemaVersion": 36,
+  "version": 1
+}
+
