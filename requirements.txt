@@ -8,3 +8,6 @@ steammarket~=0.2.7
 orjson~=3.10.7
 pytest~=8.3.2
 pytest-asyncio~=0.23.7
+grpcio~=1.66.1
+grpcio-tools~=1.66.1
+prometheus-client~=0.20.0
