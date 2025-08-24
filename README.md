@@ -2,6 +2,8 @@
 
 Production-ready Telegram bot with modular architecture, optional gRPC database microservice, observability stack, tests, and CI/CD.
 
+- Docs: [Architecture](docs/architecture.md), [gRPC API](docs/grpc.md), [Observability](docs/observability.md)
+
 ## Features
 - Aiogram 3.x router/action/schema separation
 - Pydantic v2 settings and validation
